@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>إتمام الطلب | عازل بلس</title>
+  <meta name="theme-color" content="#014D3C">
+  <link rel="icon" href="assets/img/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=11">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="section-sm">
+  <div class="container">
+    <div class="checkout-steps">
+      <span class="cs done"><i><span data-i="check" data-ic="i-xs"></span></i> السلة</span><span class="cs-line done"></span>
+      <span class="cs active"><i>2</i> الشحن والدفع</span><span class="cs-line"></span>
+      <span class="cs"><i>3</i> تأكيد الطلب</span>
+    </div>
+
+    <form class="cart-layout" id="checkout" novalidate>
+      <div>
+        <section class="panel">
+          <h2 class="panel-title"><span class="n">1</span> بيانات التواصل</h2>
+          <div class="form-grid">
+            <div class="field"><label for="fn">الاسم الكامل</label><input id="fn" required autocomplete="name" placeholder="مثال: محمد العتيبي"></div>
+            <div class="field"><label for="ph">رقم الجوال</label>
+              <div class="phone-input"><span class="cc">🇸🇦 +966</span><input id="ph" type="tel" inputmode="numeric" required placeholder="5X XXX XXXX" autocomplete="tel-national"></div>
+            </div>
+            <div class="field full"><label for="em">البريد الإلكتروني <span class="opt-t">(اختياري)</span></label><input id="em" type="email" autocomplete="email" placeholder="name@example.com" dir="ltr" style="text-align:right"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title"><span class="n">2</span> عنوان الشحن</h2>
+          <div class="form-grid">
+            <div class="field"><label for="city">المدينة</label>
+              <select id="city" required><option value="">اختر المدينة</option><option>الرياض</option><option>جدة</option><option>مكة المكرمة</option><option>المدينة المنورة</option><option>الدمام</option><option>الخبر</option><option>الطائف</option><option>تبوك</option><option>أبها</option><option>القصيم</option><option>حائل</option><option>جازان</option></select></div>
+            <div class="field"><label for="dist">الحي</label><input id="dist" required placeholder="اسم الحي"></div>
+            <div class="field full"><label for="street">الشارع ورقم المبنى</label><input id="street" required placeholder="مثال: شارع الأمير سلطان، مبنى 12"></div>
+            <div class="field"><label for="short">العنوان الوطني المختصر <span class="opt-t">(اختياري)</span></label><input id="short" placeholder="ABCD1234" dir="ltr" style="text-align:right"></div>
+            <div class="field"><label for="notes">ملاحظات للمندوب <span class="opt-t">(اختياري)</span></label><input id="notes" placeholder="مثال: بجانب المسجد"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title"><span class="n">3</span> طريقة الشحن</h2>
+          <label class="choice"><input type="radio" name="ship" value="std" checked><span data-i="truck"></span><div class="c-body"><b>شحن عادي</b><span>2–5 أيام عمل</span></div><span class="c-end" id="ship-std"></span></label>
+          <label class="choice"><input type="radio" name="ship" value="fast"><span data-i="sparkle"></span><div class="c-body"><b>شحن سريع</b><span>1–2 يوم عمل (المدن الرئيسية)</span></div><span class="c-end">45 ر.س</span></label>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title"><span class="n">4</span> طريقة الدفع</h2>
+          <label class="choice"><input type="radio" name="pay" value="card" checked><span class="c-logos"><span class="pay-ico"><img src="assets/img/pay/mada.png" alt="مدى" loading="lazy"></span><span class="pay-ico"><img src="assets/img/pay/credit_card.png" alt="Visa / Mastercard" loading="lazy"></span></span><div class="c-body"><b>بطاقة مدى / ائتمانية</b><span>مدى، فيزا، ماستركارد</span></div></label>
+          <label class="choice"><input type="radio" name="pay" value="apple"><span class="c-logos"><span class="pay-ico"><img src="assets/img/pay/apple_pay.png" alt="Apple Pay" loading="lazy"></span></span><div class="c-body"><b>Apple Pay</b><span>ادفع بلمسة</span></div></label>
+          <label class="choice"><input type="radio" name="pay" value="stc"><span class="c-logos"><span class="pay-ico"><img src="assets/img/pay/stc_pay.png" alt="stc Bank" loading="lazy"></span></span><div class="c-body"><b>stc Bank</b><span>ادفع عبر تطبيق stc Bank</span></div></label>
+          <label class="choice"><input type="radio" name="pay" value="tabby"><span class="c-logos"><span class="pay-ico"><img src="assets/img/pay/tabby_installment.png" alt="تابي" loading="lazy"></span></span><div class="c-body"><b>تابي — قسّمها على 4</b><span>بدون فوائد أو رسوم</span></div></label>
+          <label class="choice"><input type="radio" name="pay" value="tamara"><span class="c-logos"><span class="pay-ico"><img src="assets/img/pay/tamara_installment.png" alt="تمارا" loading="lazy"></span></span><div class="c-body"><b>تمارا — ادفع لاحقاً</b><span>قسّم فاتورتك على دفعات</span></div></label>
+          <div class="note"><span data-i="lock" data-ic="i-sm"></span><span>يتم إدخال بيانات البطاقة في صفحة بوابة الدفع الآمنة بعد تأكيد الطلب. لا نخزّن بيانات بطاقتك.</span></div>
+        </section>
+      </div>
+
+      <aside class="summary">
+        <div class="panel">
+          <h2 class="panel-title">طلبك</h2>
+          <div id="co-items"></div>
+          <div class="mt-2">
+            <div class="sum-row"><span>المجموع الفرعي</span><span id="s-sub"></span></div>
+            <div class="sum-row hidden" id="r-disc"><span>الخصم</span><span id="s-disc" style="color:var(--ok)"></span></div>
+            <div class="sum-row"><span>الشحن</span><span id="s-ship"></span></div>
+            <div class="sum-row total"><span>الإجمالي</span><span id="s-total"></span></div>
+          </div>
+          <label class="check mt-2" style="font-size:13.5px"><input type="checkbox" id="terms"> أوافق على <a href="#" class="link">الشروط والأحكام</a></label>
+          <p class="coupon-msg err" id="err" style="margin-top:6px"></p>
+          <button class="btn btn-lg btn-block mt-1" type="submit"><span data-i="lock" data-ic="i-sm"></span> تأكيد الطلب والدفع</button>
+          <div class="secure-note"><span data-i="shield" data-ic="i-xs"></span> معاملاتك محمية ومشفّرة</div>
+        </div>
+      </aside>
+    </form>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/main.js?v=11"></script>
+<script>
+document.addEventListener("theme:ready", () => {
+  const $id = id => document.getElementById(id);
+  if (!Cart.items().length) { location.replace("cart.html"); return; }
+  const shipFee = () => document.querySelector('input[name="ship"]:checked').value === "fast" ? 45 : null;
+  function render() {
+    $id("co-items").innerHTML = Cart.items().map(i => {
+      const p = findProduct(i.id); if (!p) return "";
+      return `<div class="mini-item" style="grid-template-columns:60px 1fr auto"><div style="position:relative"><img src="${p.img}" alt="" style="width:60px;height:60px"><span class="count" style="position:absolute;top:-6px;inset-inline-end:-6px;min-width:20px;height:20px;border-radius:999px;background:var(--green-700);color:#fff;font-size:11px;display:grid;place-items:center">${i.qty}</span></div><div><h4>${p.name}</h4>${i.opt ? `<div class="meta">${i.opt}</div>` : ""}</div><span class="price">${money(p.price * i.qty)}</span></div>`;
+    }).join("");
+    const t = Cart.totals();
+    const ship = shipFee() ?? t.shipping;
+    $id("ship-std").innerHTML = t.shipping ? money(t.shipping) : "مجاني";
+    $id("s-sub").innerHTML = money(t.sub);
+    $id("r-disc").classList.toggle("hidden", !t.discount);
+    $id("s-disc").innerHTML = "- " + money(t.discount);
+    $id("s-ship").innerHTML = ship ? money(ship) : `<span style="color:var(--ok)">مجاني</span>`;
+    $id("s-total").innerHTML = money(t.sub - t.discount + ship);
+  }
+  document.querySelectorAll('input[name="ship"]').forEach(r => r.addEventListener("change", render));
+  $id("checkout").addEventListener("submit", e => {
+    e.preventDefault();
+    const err = $id("err");
+    const req = ["fn", "ph", "city", "dist", "street"].map($id);
+    const bad = req.filter(f => !f.value.trim());
+    req.forEach(f => f.style.borderColor = bad.includes(f) ? "var(--danger)" : "");
+    if (bad.length) { err.textContent = "فضلاً أكمل الحقول المطلوبة."; bad[0].focus(); return; }
+    if (!/^5\d{8}$/.test($id("ph").value.replace(/\D/g, "").replace(/^0/, ""))) { err.textContent = "رقم الجوال يجب أن يبدأ بـ 5 ويتكون من 9 أرقام."; $id("ph").focus(); return; }
+    if (!$id("terms").checked) { err.textContent = "يجب الموافقة على الشروط والأحكام."; return; }
+    const t = Cart.totals();
+    sessionStorage.setItem("azel_last_order", JSON.stringify({ no: "AZ" + Math.floor(100000 + Math.random() * 899999), total: t.sub - t.discount + (shipFee() ?? t.shipping), city: $id("city").value, name: $id("fn").value }));
+    // في سلة: صفحة الدفع وصفحة الشكر تُداران من المنصة
+    localStorage.removeItem("azel_cart"); localStorage.removeItem("azel_coupon");
+    Cart.render(); toast("تم تأكيد الطلب (عرض توضيحي)");
+    setTimeout(() => location.href = "index.html", 1800);
+  });
+  render();
+});
+</script>
+</body>
+</html>

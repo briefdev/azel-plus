@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>المنتج | عازل بلس</title>
+  <meta name="theme-color" content="#014D3C">
+  <link rel="icon" href="assets/img/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=11">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container crumbs-bar">
+    <nav class="crumbs" aria-label="مسار التنقل"><a href="index.html">الرئيسية</a><span class="sep">/</span><a href="shop.html" id="crumb-cat">المتجر</a><span class="sep">/</span><span id="crumb-name"></span></nav>
+  </div>
+
+  <section class="container pdp">
+    <div class="gallery">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="main-img" id="main-img"><span class="badge hidden" id="p-badge"></span><img src="" alt="" id="main-photo"></div>
+    </div>
+
+    <div class="pdp-info">
+      <span class="chip" id="p-cat"></span>
+      <h1 id="p-name"></h1>
+      <div class="pdp-meta">
+        <span class="flex items-center gap-1"><span id="p-stars"></span><b class="num" id="p-rating"></b> <a href="#reviews" class="muted" id="p-reviews"></a></span>
+        <span class="sep"></span>
+        <span class="stock">متوفر</span>
+        <span class="sep"></span>
+        <span>رمز المنتج: <span class="ltr" id="p-sku"></span></span>
+      </div>
+      <p class="muted mt-2" id="p-short"></p>
+
+      <div class="pdp-price">
+        <span class="price" id="p-price"></span>
+        <span class="save-tag hidden" id="p-save"></span>
+      </div>
+      <div class="bnpl">
+        <span class="bnpl-logos"><span class="pay-ico"><img src="assets/img/pay/tabby_installment.png" alt="تابي" loading="lazy"></span><span class="pay-ico"><img src="assets/img/pay/tamara_installment.png" alt="تمارا" loading="lazy"></span></span>
+        <span>قسّمها على 4 دفعات بقيمة <b class="num" id="p-inst"></b> ر.س بدون فوائد</span>
+      </div>
+
+      <!-- Grade per zone (car film) — matches the store's 4 required options -->
+      <div class="opt hidden" id="opt-zones">
+        <div class="opt-label">اختر درجة التظليل لكل جهة <span>على كيفك</span></div>
+        <div class="zones">
+          <div class="car-diagram" aria-hidden="true">
+            <svg viewBox="0 0 200 380">
+              <defs><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#BFE3F3"/><stop offset="1" stop-color="#8CC4DE"/></linearGradient></defs>
+              <rect x="22" y="14" width="156" height="352" rx="62" class="body"/>
+              <rect x="34" y="128" width="132" height="132" rx="16" class="roof"/>
+              <g data-zone="front"><path d="M44 120 Q100 92 156 120 L146 80 Q100 62 54 80 Z" class="glass"/></g>
+              <g data-zone="fside"><path d="M30 132 L40 128 L40 192 L30 192 Z" class="glass"/><path d="M170 132 L160 128 L160 192 L170 192 Z" class="glass"/></g>
+              <g data-zone="rside"><path d="M30 198 L40 198 L40 252 L30 248 Z" class="glass"/><path d="M170 198 L160 198 L160 252 L170 248 Z" class="glass"/></g>
+              <g data-zone="rear"><path d="M48 268 Q100 284 152 268 L144 300 Q100 312 56 300 Z" class="glass"/></g>
+              <rect x="64" y="22" width="72" height="8" rx="4" class="light"/>
+            </svg>
+            <span class="dlabel">أمام</span>
+          </div>
+          <div class="zone-rows" id="zone-rows"></div>
+        </div>
+        <div class="zone-all">
+          <span>نفس الدرجة للكل:</span>
+          <button type="button" data-all="00">00</button><button type="button" data-all="01">01</button><button type="button" data-all="02">02</button>
+        </div>
+        <p class="zone-err hidden" id="zone-err">فضلاً اختر درجة التظليل لكل الجهات قبل الإضافة للسلة.</p>
+      </div>
+
+      <!-- Single grade (home film) -->
+      <div class="opt hidden light" id="opt-grade" data-tint data-default="01">
+        <div class="opt-label">درجة التظليل <span>المختارة: <b data-t="label"></b> — <span data-t="name"></span></span></div>
+        <p class="muted" style="font-size:14px;margin:-4px 0 12px" data-t="desc"></p>
+        <div class="grades" style="margin-top:0"></div>
+        <div class="tint-preview hidden"></div>
+      </div>
+
+      <div class="buy-row">
+        <div class="qty"><button type="button" id="q-plus" aria-label="زيادة"><span data-i="plus" data-ic="i-sm"></span></button><input id="q" type="number" value="1" min="1" max="99" aria-label="الكمية"><button type="button" id="q-minus" aria-label="إنقاص"><span data-i="minus" data-ic="i-sm"></span></button></div>
+        <button class="btn btn-lg" id="add"><span data-i="bag" data-ic="i-sm"></span> أضف للسلة</button>
+        <button class="btn btn-outline btn-icon" style="width:52px;height:52px" id="p-wish" aria-label="المفضلة"><span data-i="heart"></span></button>
+      </div>
+      <button class="btn btn-lime btn-lg btn-block mt-2" id="buy-now">اشترِ الآن</button>
+
+      <div class="perks">
+        <div class="perk"><span data-i="shield"></span><div><b id="perk-w">ضمان 5 سنوات</b>ضمان حقيقي</div></div>
+        <div class="perk"><span data-i="truck"></span><div><b>شحن سريع</b>لكل مدن المملكة</div></div>
+        <div class="perk"><span data-i="refresh"></span><div><b>ما جاز لك؟</b>رجّعه حسب السياسة</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="tabs" data-tabs role="tablist">
+        <button class="active" data-tab="t-desc">الوصف</button>
+        <button data-tab="t-specs">المواصفات</button>
+        <button data-tab="t-reviews" id="reviews">التقييمات</button>
+        <button data-tab="t-ship">الشحن والاسترجاع</button>
+      </div>
+      <div class="tab-panel active" id="t-desc"><div class="prose" id="p-desc"></div></div>
+      <div class="tab-panel" id="t-specs"><table class="spec-table" id="p-specs"></table></div>
+      <div class="tab-panel" id="t-reviews">
+        <div class="reviews">
+          <figure class="review"><span data-stars="5"></span><q>يهتمون بكل التفاصيل، يستاهلون خمس نجوم.</q><figcaption class="reviewer"><span class="avatar">ح</span><div><b>حمود الحربي</b><span>الرياض</span></div><span class="verified">مشتري موثّق</span></figcaption></figure>
+          <figure class="review"><span data-stars="5"></span><q>جودة درجة أولى، وتعاملهم كان راقي جداً.</q><figcaption class="reviewer"><span class="avatar">ع</span><div><b>عميلة عازل بلس</b><span>مكة</span></div><span class="verified">مشتري موثّق</span></figcaption></figure>
+          <figure class="review"><span data-stars="5"></span><q>بيّض الله وجيههم، تظليل ما عليه كلام ويستاهل.</q><figcaption class="reviewer"><span class="avatar">م</span><div><b>موسى الغواري</b><span>الرياض</span></div><span class="verified">مشتري موثّق</span></figcaption></figure>
+        </div>
+      </div>
+      <div class="tab-panel" id="t-ship">
+        <div class="prose">
+          <h3 style="margin-top:0">الشحن</h3>
+          <ul><li>شحن لجميع مدن المملكة خلال 2–5 أيام عمل.</li><li>شحن مجاني للطلبات فوق 300 ر.س.</li><li>يصلك رقم التتبع برسالة نصية فور شحن الطلب.</li></ul>
+          <h3>الاسترجاع</h3>
+          <p>جرّبه براحتك، وإذا ما جاز لك رجّعه. اطّلع على <a href="#" class="link">سياسة الضمان والاسترجاع</a> للتفاصيل.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">يكمّل طلبك</span><h2 class="section-title">منتجات قد تعجبك</h2></div></div>
+      <div class="products" id="related"></div>
+    </div>
+  </section>
+
+  <div class="sticky-buy" id="sticky-buy">
+    <span class="price" id="sb-price"></span>
+    <button class="btn" id="sb-add"><span data-i="bag" data-ic="i-sm"></span> أضف للسلة</button>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/main.js?v=11"></script>
+<script>
+document.addEventListener("theme:ready", () => {
+  const params = new URLSearchParams(location.search);
+  const p = findProduct(params.get("id")) || PRODUCTS[0];
+  const $id = id => document.getElementById(id);
+  const isFilm = !!p.grades;
+
+  document.title = `${p.name} | عازل بلس`;
+  $id("crumb-cat").textContent = p.catName; $id("crumb-cat").href = `shop.html?cat=${p.cat}`;
+  $id("crumb-name").textContent = p.name;
+  $id("p-cat").textContent = p.catName;
+  $id("p-name").textContent = p.name;
+  $id("p-short").textContent = p.short;
+  $id("p-stars").innerHTML = stars(p.rating);
+  $id("p-rating").textContent = p.rating;
+  $id("p-reviews").textContent = `(${p.reviews} تقييم)`;
+  $id("p-sku").textContent = "AZ-" + p.id.toUpperCase();
+  $id("p-price").innerHTML = `${p.old ? `<del>${p.old}</del>` : ""}${money(p.price)}${p.unit ? ` <small>${p.unit}</small>` : ""}`;
+  $id("sb-price").innerHTML = money(p.price);
+  $id("p-inst").textContent = (p.price / 4).toFixed(2).replace(/\.00$/, "");
+  if (p.old) { $id("p-save").textContent = `وفّر ${p.old - p.price} ر.س`; $id("p-save").classList.remove("hidden"); }
+  if (p.badge) { $id("p-badge").textContent = p.badge; $id("p-badge").classList.remove("hidden"); }
+  if (p.cat === "acc") $id("perk-w").textContent = "ضمان سنتين";
+
+  // Gallery
+  const photo = $id("main-photo");
+  const setImg = src => { photo.src = src; photo.alt = p.name; $id("main-img").classList.toggle("contain", !p.cover); };
+  setImg(p.gallery[0]);
+  $id("thumbs").innerHTML = p.gallery.map((g, i) => `<button class="${i ? "" : "active"}" data-src="${g}" aria-label="صورة ${i + 1}"><img src="${g}" alt=""></button>`).join("");
+  $id("thumbs").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    document.querySelectorAll("#thumbs button").forEach(x => x.classList.toggle("active", x === b));
+    setImg(b.dataset.src);
+  });
+
+  // Options
+  // Options
+  let grade = null;
+  const ZONES = [
+    { id: "front", name: "الزجاج الأمامي" },
+    { id: "fside", name: "الجوانب الأمامية" },
+    { id: "rside", name: "الجوانب الخلفية" },
+    { id: "rear",  name: "الزجاج الخلفي" }
+  ];
+  const picks = {};
+  const zonesOn = p.cat === "cars";
+  if (zonesOn) {
+    const box = $id("opt-zones");
+    box.classList.remove("hidden");
+    $id("zone-rows").innerHTML = ZONES.map(z => `
+      <div class="zone-row" data-row="${z.id}">
+        <div class="zone-name">${z.name} <i>*</i><small data-pick-label>لم تُحدَّد</small></div>
+        <div class="zone-opts">${GRADES.map(g => `<button type="button" class="zone-btn" data-z="${z.id}" data-g="${g.id}"><b>${g.label}</b><span>${g.short}</span></button>`).join("")}</div>
+      </div>`).join("");
+    const pick = (zid, gid) => {
+      const g = GRADES.find(x => x.id === gid); picks[zid] = g;
+      box.querySelectorAll(`[data-z="${zid}"]`).forEach(b => b.classList.toggle("active", b.dataset.g === gid));
+      const row = box.querySelector(`[data-row="${zid}"]`);
+      row.classList.add("done"); row.classList.remove("missing");
+      row.querySelector("[data-pick-label]").textContent = `${g.name} · عزل ${g.heat}%`;
+      box.querySelector(`[data-zone="${zid}"]`).style.setProperty("--a", g.alpha);
+      box.querySelector(`[data-zone="${zid}"]`).classList.add("set");
+      box.querySelectorAll("[data-all]").forEach(b => b.classList.toggle("active", ZONES.every(z => picks[z.id]?.id === b.dataset.all)));
+      if (ZONES.every(z => picks[z.id])) $id("zone-err").classList.add("hidden");
+    };
+    const focusRow = zid => box.querySelectorAll("[data-row],[data-zone]").forEach(el => el.classList.toggle("hl", (el.dataset.row || el.dataset.zone) === zid));
+    box.addEventListener("click", e => {
+      const b = e.target.closest("[data-z]"); if (b) return pick(b.dataset.z, b.dataset.g);
+      const all = e.target.closest("[data-all]"); if (all) return ZONES.forEach(z => pick(z.id, all.dataset.all));
+      const zone = e.target.closest("[data-zone]"); if (zone) { focusRow(zone.dataset.zone); box.querySelector(`[data-row="${zone.dataset.zone}"]`).scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+    });
+    box.addEventListener("mouseover", e => { const el = e.target.closest("[data-row],[data-zone]"); focusRow(el ? (el.dataset.row || el.dataset.zone) : null); });
+    box.addEventListener("mouseleave", () => focusRow(null));
+    if (params.get("grade")) ZONES.forEach(z => pick(z.id, params.get("grade")));
+  } else if (isFilm) {
+    const g = $id("opt-grade");
+    if (params.get("grade")) { g.dataset.default = params.get("grade"); initTint(g); }
+    g.classList.remove("hidden");
+    grade = GRADES.find(x => x.id === g.dataset.selected);
+    g.addEventListener("grade", e => grade = e.detail);
+  }
+
+  // Qty
+  const q = $id("q");
+  $id("q-plus").onclick = () => q.value = Math.min(99, +q.value + 1);
+  $id("q-minus").onclick = () => q.value = Math.max(1, +q.value - 1);
+  const optLabel = () => zonesOn
+    ? ZONES.map(z => `${z.name}: ${picks[z.id].label}`).join(" · ")
+    : grade ? `الدرجة ${grade.label} (${grade.name})` : "";
+  const add = () => {
+    if (zonesOn) {
+      const missing = ZONES.filter(z => !picks[z.id]);
+      if (missing.length) {
+        missing.forEach(z => document.querySelector(`[data-row="${z.id}"]`).classList.add("missing"));
+        $id("zone-err").classList.remove("hidden");
+        $id("opt-zones").scrollIntoView({ behavior: "smooth", block: "center" });
+        return false;
+      }
+    }
+    Cart.add(p.id, Math.max(1, +q.value || 1), optLabel());
+    return true;
+  };
+  $id("add").onclick = add;
+  $id("sb-add").onclick = add;
+  $id("buy-now").onclick = () => { if (add()) location.href = "checkout.html"; };
+
+  // Wishlist
+  const wb = $id("p-wish");
+  wb.dataset.wish = p.id;
+  wb.classList.toggle("wish", false);
+  const syncWish = () => { wb.style.color = Wish.has(p.id) ? "var(--danger)" : ""; wb.querySelector("svg").style.fill = Wish.has(p.id) ? "currentColor" : "none"; };
+  document.addEventListener("wish:change", syncWish); syncWish();
+
+  // Description + specs
+  const desc = {
+    cars: `<p>عازل بلس الحراري للسيارات مصنوع بتقنية <b>النانو سيراميك</b> المطوّرة، يمنع دخول حرارة الشمس للمقصورة ويحافظ على برودة سيارتك حتى في عز الصيف، بدون ما يأثر على وضوح الرؤية أو إشارة الجوال والـ GPS.</p>
+      <h3>ليش عازل بلس؟</h3>
+      <ul><li>عزل حراري (TSER) حتى 65% للدرجة 00، و76% للدرجة 01، و94% للدرجة 02.</li><li>حجب 99% من الأشعة فوق البنفسجية لحماية بشرتك والمقصورة.</li><li>وضوح رؤية عالي ليلاً ونهاراً.</li><li>خصوصية بدرجات تظليل متعددة.</li><li>ضمان حقيقي 5 سنوات ضد التقشّر والفقاعات وتغيّر اللون.</li></ul>
+      <h3>تظليل على كيفك</h3><p>تختار درجة مستقلة لكل جهة: الزجاج الأمامي، الجوانب الأمامية، الجوانب الخلفية، والزجاج الخلفي.</p>`,
+    homes: `<p>عازل حراري للمنازل والمكاتب يمنحك <b>خصوصية كاملة وتوفير يدوم</b>. يقلّل دخول الحرارة عبر النوافذ والواجهات الزجاجية، فيخفّ الحمل على المكيّف وتنخفض فاتورة الكهرباء.</p>
+      <ul><li>عزل حراري (TSER) يصل حتى 94% حسب الدرجة.</li><li>حجب 99% من الأشعة فوق البنفسجية — يحمي الأثاث والأرضيات من البهتان.</li><li>توفير عالي في استهلاك الطاقة.</li><li>رؤية واضحة بدرجات تظليل متعددة.</li></ul>`,
+    acc: `<p>${p.short}. منتج أصلي مختار بعناية ليناسب استخدامك اليومي في السيارة، مع <b>ضمان سنتين</b>.</p><ul><li>جودة تصنيع عالية وخامات متينة.</li><li>متوافق مع أغلب الجوالات والسيارات.</li><li>شحن سريع لكل مدن المملكة.</li></ul>`
+  }[p.cat];
+  $id("p-desc").innerHTML = desc;
+  const specs = [["القسم", p.catName], ...(p.specs || []), ...(isFilm ? [["التقنية", "نانو سيراميك"], ["درجات التظليل", GRADES.map(g => `${g.label} (${g.name})`).join(" · ")]] : [["الضمان", "سنتين"]])];
+  $id("p-specs").innerHTML = specs.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("");
+
+  // Related
+  $id("related").innerHTML = PRODUCTS.filter(x => x.id !== p.id).slice(0, 4).map(productCard).join("");
+  document.querySelectorAll("#t-reviews [data-stars]").forEach(el => el.outerHTML = stars(5));
+
+  // Sticky buy bar (mobile)
+  const sb = $id("sticky-buy"), addBtn = $id("add");
+  addEventListener("scroll", () => sb.classList.toggle("show", addBtn.getBoundingClientRect().bottom < 0), { passive: true });
+});
+</script>
+</body>
+</html>

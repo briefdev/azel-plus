@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>المتجر | عازل بلس</title>
+  <meta name="description" content="تسوّق عوازل السيارات والمنازل وإكسسوارات السيارة من عازل بلس.">
+  <meta name="theme-color" content="#014D3C">
+  <link rel="icon" href="assets/img/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=11">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="مسار التنقل"><a href="index.html">الرئيسية</a><span class="sep">/</span><span id="crumb-cur">المتجر</span></nav>
+      <h1 id="shop-title">جميع المنتجات</h1>
+      <p id="shop-sub">عوازل حرارية بتقنية النانو سيراميك وإكسسوارات عصرية لسيارتك — كلها مختارة بعناية ومضمونة.</p>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container shop-layout">
+      <aside class="filters" id="filters" aria-label="تصفية المنتجات">
+        <button class="h-btn close-filters" data-close style="display:none" aria-label="إغلاق"><span data-i="x"></span></button>
+        <div class="f-group">
+          <h4>الأقسام</h4>
+          <div id="f-cats"></div>
+        </div>
+        <div class="f-group">
+          <h4>السعر <span class="muted" style="font-size:12px;font-weight:400">ر.س</span></h4>
+          <div class="range-row">
+            <input type="number" id="f-min" placeholder="من" min="0" inputmode="numeric" aria-label="أقل سعر">
+            <span class="muted">—</span>
+            <input type="number" id="f-max" placeholder="إلى" min="0" inputmode="numeric" aria-label="أعلى سعر">
+          </div>
+        </div>
+        <div class="f-group">
+          <h4>التقييم</h4>
+          <label class="check"><input type="radio" name="rate" value="0" checked> الكل</label>
+          <label class="check"><input type="radio" name="rate" value="4.5"> 4.5 فأعلى</label>
+          <label class="check"><input type="radio" name="rate" value="4.8"> 4.8 فأعلى</label>
+        </div>
+        <div class="f-group">
+          <button class="btn btn-outline btn-sm btn-block" id="f-reset">مسح الفلاتر</button>
+        </div>
+      </aside>
+
+      <div>
+        <div class="cat-banner">
+          <div><h3>أول مرة تطلب؟</h3><p>استخدم الكود <b class="ltr" style="color:var(--lime)">Az25</b> ووفّر على طلبك الأول.</p></div>
+          <button class="btn btn-lime btn-sm" data-copy="Az25">انسخ الكود</button>
+        </div>
+        <div class="toolbar">
+          <div class="flex items-center gap-1 wrap">
+            <button class="btn btn-outline btn-sm filter-toggle" data-open="filters"><span data-i="filter" data-ic="i-sm"></span> تصفية</button>
+            <span class="count">عرض <b id="res-count">0</b> منتج</span>
+          </div>
+          <div class="select">
+            <select id="sort" aria-label="ترتيب">
+              <option value="pop">الأكثر شيوعاً</option>
+              <option value="rating">الأعلى تقييماً</option>
+              <option value="low">السعر: من الأقل للأعلى</option>
+              <option value="high">السعر: من الأعلى للأقل</option>
+            </select>
+            <span data-i="chevD" data-ic="i-sm"></span>
+          </div>
+        </div>
+        <div class="products cols-3" id="grid"></div>
+        <div class="cart-empty hidden" id="no-res">
+          <div class="empty-ico"><span data-i="search" data-ic="i-lg"></span></div>
+          <h4>ما لقينا منتجات مطابقة</h4>
+          <p>جرّب تغيّر الفلاتر أو كلمة البحث.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/main.js?v=11"></script>
+<script>
+document.addEventListener("theme:ready", () => {
+  const params = new URLSearchParams(location.search);
+  const q = (params.get("q") || "").trim();
+  const state = { cats: params.get("cat") ? [params.get("cat")] : [], min: "", max: "", rate: 0, sort: "pop" };
+
+  // Category filters
+  document.getElementById("f-cats").innerHTML = CATS.map(c =>
+    `<label class="check"><input type="checkbox" value="${c.id}" ${state.cats.includes(c.id) ? "checked" : ""}> ${c.name}<span class="n">${PRODUCTS.filter(p => p.cat === c.id).length}</span></label>`).join("");
+
+  const titleFor = () => {
+    if (q) return [`نتائج البحث عن «${q}»`, "نتائج مطابقة لبحثك في متجر عازل بلس."];
+    if (state.cats.length === 1) {
+      const c = CATS.find(x => x.id === state.cats[0]);
+      const subs = { cars: "عوازل حرارية بتقنية النانو سيراميك لمختلف أنواع السيارات، بضمان حقيقي 5 سنوات.", homes: "خصوصية كاملة وتوفير يدوم في استهلاك الكهرباء لبيتك ومكتبك.", acc: "شواحن وبطاريات ومثبتات جوال عصرية للسيارة — بضمان سنتين." };
+      return [c.name, subs[c.id]];
+    }
+    return ["جميع المنتجات", document.getElementById("shop-sub").textContent];
+  };
+
+  function apply() {
+    let list = PRODUCTS.filter(p =>
+      (!state.cats.length || state.cats.includes(p.cat)) &&
+      (state.min === "" || p.price >= +state.min) &&
+      (state.max === "" || p.price <= +state.max) &&
+      p.rating >= state.rate &&
+      (!q || (p.name + p.short + p.catName).includes(q)));
+    const s = { rating: (a, b) => b.rating - a.rating, low: (a, b) => a.price - b.price, high: (a, b) => b.price - a.price, pop: (a, b) => b.reviews - a.reviews }[state.sort];
+    list = [...list].sort(s);
+    document.getElementById("grid").innerHTML = list.map(productCard).join("");
+    document.getElementById("res-count").textContent = list.length;
+    document.getElementById("no-res").classList.toggle("hidden", list.length > 0);
+    const [t, sub] = titleFor();
+    document.getElementById("shop-title").textContent = t;
+    document.getElementById("crumb-cur").textContent = t;
+    document.getElementById("shop-sub").textContent = sub;
+    document.title = `${t} | عازل بلس`;
+  }
+
+  document.getElementById("f-cats").addEventListener("change", () => {
+    state.cats = [...document.querySelectorAll("#f-cats input:checked")].map(i => i.value); apply();
+  });
+  ["f-min", "f-max"].forEach(id => document.getElementById(id).addEventListener("input", e => { state[id === "f-min" ? "min" : "max"] = e.target.value; apply(); }));
+  document.querySelectorAll('input[name="rate"]').forEach(r => r.addEventListener("change", e => { state.rate = +e.target.value; apply(); }));
+  document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; apply(); });
+  document.getElementById("f-reset").addEventListener("click", () => {
+    Object.assign(state, { cats: [], min: "", max: "", rate: 0 });
+    document.querySelectorAll("#f-cats input").forEach(i => i.checked = false);
+    document.getElementById("f-min").value = document.getElementById("f-max").value = "";
+    document.querySelector('input[name="rate"][value="0"]').checked = true;
+    apply();
+  });
+  apply();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مراكز التركيب المعتمدة | عازل بلس</title>
+  <meta name="description" content="مراكز تركيب عازل بلس المعتمدة في مدن المملكة — اختر مدينتك واضغط على المركز للتوجه في خرائط جوجل.">
+  <meta name="theme-color" content="#014D3C">
+  <link rel="icon" href="assets/img/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=11">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="مسار التنقل"><a href="index.html">الرئيسية</a><span class="sep">/</span><span>مراكز التركيب</span></nav>
+      <span class="chip chip-dark mt-2"><span data-i="pin" data-ic="i-xs"></span> المراكز المعتمدة</span>
+      <h1>مراكز تركيب عازل بلس</h1>
+      <p>اختر مدينتك واضغط على المركز للتوجّه إليه في خرائط جوجل. مراكزنا المميزة تقدّم سعر تركيب خاص لعملاء عازل بلس.</p>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <nav class="city-bar" id="cities" aria-label="اختر المدينة"></nav>
+
+      <div class="centers-head">
+        <h2 id="city-title"></h2>
+        <span class="special-tag" id="special-tag"><span data-i="star" data-ic="i-sm"></span> مراكز التركيب المميزة — سعر خاص</span>
+      </div>
+
+      <div class="centers-grid" id="centers"></div>
+      <div class="centers-empty hidden" id="empty">
+        <div class="empty-ico"><span data-i="pin" data-ic="i-lg"></span></div>
+        <h3>نجهّز مراكز معتمدة في <span id="empty-city"></span></h3>
+        <p>تواصل معنا على الواتساب ونرشّح لك أقرب مركز تركيب موثوق في مدينتك.</p>
+        <a href="#" class="btn mt-3" id="empty-wa" target="_blank" rel="noopener" style="--btn-bg:#25D366"><span data-i="wa" data-ic="i-sm"></span> اسألنا على الواتساب</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">قبل ما تروح للمركز</span>
+        <h2 class="section-title">كيف تستفيد من السعر الخاص؟</h2>
+      </div>
+      <div class="how-install">
+        <div class="hi"><span class="n">1</span><div><b>اطلب العازل من المتجر</b><p>اختر درجة التظليل لكل جهة من سيارتك واستلم طلبك.</p></div></div>
+        <div class="hi"><span class="n">2</span><div><b>توجّه لأقرب مركز مميز</b><p>اذكر أنك من عملاء عازل بلس واعرض رقم طلبك للحصول على السعر الخاص.</p></div></div>
+        <div class="hi"><span class="n">3</span><div><b>فعّل ضمانك</b><p>بعد التركيب فعّل الضمان الإلكتروني من <a href="https://warranty.azel-sa.com/" target="_blank" rel="noopener" class="link">صفحة تفعيل الضمان</a>.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm" style="padding-bottom:clamp(56px,8vw,104px)">
+    <div class="container">
+      <div class="cta-band">
+        <div>
+          <span class="eyebrow">ما لقيت مركز قريب؟</span>
+          <h2 class="mt-1">نساعدك تلقى أقرب مركز</h2>
+          <p>فريق خدمة العملاء جاهز يرشّح لك مركز تركيب موثوق في مدينتك.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="#" class="btn btn-lime btn-lg" id="cta-wa" target="_blank" rel="noopener"><span data-i="wa" data-ic="i-sm"></span> تواصل واتساب</a>
+          <a href="product.html?id=car-film" class="btn btn-ghost-light btn-lg">اطلب العازل</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/main.js?v=11"></script>
+<script>
+/* ---------- بيانات المراكز (عدّلها هنا) ----------
+   featured: مركز مميز بسعر خاص | price: سعر التركيب الخاص بالريال
+   map: رابط خرائط جوجل المباشر (اختياري — إن تُرك فارغاً يُبحث بالاسم والعنوان) */
+const CITIES = ["الرياض", "جدة", "الدمام", "الخبر", "مكة المكرمة", "المدينة المنورة", "الطائف"];
+const CENTERS = [
+  { city: "الرياض", name: "روكال — الفرع الرئيسي", addr: "الحلة، غبيرة", featured: true, price: 100, map: "" },
+  { city: "الرياض", name: "روكال — فرع الغرابي",  addr: "شارع الغرابي، العمل", featured: true, price: 100, map: "" },
+  { city: "الرياض", name: "حكايات إبداع",          addr: "حي الخليج", featured: true, price: 100, map: "" }
+];
+
+document.addEventListener("theme:ready", () => {
+  const $id = id => document.getElementById(id);
+  const wa = `https://wa.me/${STORE.whatsapp}`;
+  $id("cta-wa").href = wa;
+  const mapUrl = c => c.map || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${c.name.replace(" — ", " ")} ${c.addr} ${c.city}`)}`;
+
+  const params = new URLSearchParams(location.search);
+  let city = CITIES.includes(params.get("city")) ? params.get("city") : CITIES[0];
+
+  $id("cities").innerHTML = CITIES.map(c => {
+    const n = CENTERS.filter(x => x.city === c).length;
+    return `<button class="pill" data-city="${c}">${c}${n ? `<span class="n">${n}</span>` : ""}</button>`;
+  }).join("");
+
+  function render() {
+    document.querySelectorAll("[data-city]").forEach(b => b.classList.toggle("active", b.dataset.city === city));
+    const list = CENTERS.filter(c => c.city === city).sort((a, b) => b.featured - a.featured);
+    $id("city-title").innerHTML = `${icon("pin")} مراكز ${city}`;
+    $id("special-tag").classList.toggle("hidden", !list.some(c => c.featured));
+    $id("centers").classList.toggle("hidden", !list.length);
+    $id("empty").classList.toggle("hidden", !!list.length);
+    $id("empty-city").textContent = city;
+    $id("empty-wa").href = `${wa}?text=${encodeURIComponent(`السلام عليكم، أبحث عن مركز تركيب عازل بلس في ${city}`)}`;
+    $id("centers").innerHTML = list.map(c => `
+      <article class="c-center">
+        ${c.featured ? `<span class="c-badge">مميز</span>` : ""}
+        <div class="c-top">
+          <span class="c-pin">${icon("pin")}</span>
+          <div><h3>${c.name}</h3><p class="c-addr">${icon("nav", "i-xs")} ${c.addr} — ${c.city}</p></div>
+        </div>
+        ${c.price ? `<div class="c-price"><span>سعر تركيب خاص<br>لعملاء عازل بلس</span><b class="num">${c.price}<small>ر.س</small></b></div>` : ""}
+        <a href="${mapUrl(c)}" target="_blank" rel="noopener" class="btn btn-lime btn-block">${icon("nav", "i-sm")} التوجّه في خرائط جوجل</a>
+      </article>`).join("");
+  }
+  $id("cities").addEventListener("click", e => {
+    const b = e.target.closest("[data-city]"); if (!b) return;
+    city = b.dataset.city;
+    history.replaceState(null, "", `?city=${encodeURIComponent(city)}`);
+    render();
+  });
+  render();
+});
+</script>
+</body>
+</html>
