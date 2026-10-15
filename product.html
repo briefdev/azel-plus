@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=11">
+  <link rel="stylesheet" href="assets/css/style.css?v=15">
 </head>
 <body>
 <div id="site-header"></div>
@@ -80,6 +80,16 @@
         <div class="tint-preview hidden"></div>
       </div>
 
+      <!-- Gift picker (bundle) -->
+      <div class="opt hidden" id="opt-gift">
+        <div class="opt-label"><span class="flex items-center gap-1" style="color:var(--ink);font-family:var(--font-head);font-weight:600;font-size:15px"><span data-i="gift" data-ic="i-sm"></span> اختر هديتك <i style="color:var(--danger);font-style:normal">*</i></span><span>هدية مجانية مع الباكج</span></div>
+        <div class="gifts" id="gifts"></div>
+      </div>
+
+      <!-- Generic options (color / scent) -->
+      <div id="opt-generic"></div>
+      <p class="zone-err hidden" id="opt-err">فضلاً اختر كل الخيارات المطلوبة قبل الإضافة للسلة.</p>
+
       <div class="buy-row">
         <div class="qty"><button type="button" id="q-plus" aria-label="زيادة"><span data-i="plus" data-ic="i-sm"></span></button><input id="q" type="number" value="1" min="1" max="99" aria-label="الكمية"><button type="button" id="q-minus" aria-label="إنقاص"><span data-i="minus" data-ic="i-sm"></span></button></div>
         <button class="btn btn-lg" id="add"><span data-i="bag" data-ic="i-sm"></span> أضف للسلة</button>
@@ -137,7 +147,7 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=11"></script>
+<script src="assets/js/main.js?v=15"></script>
 <script>
 document.addEventListener("theme:ready", () => {
   const params = new URLSearchParams(location.search);
@@ -151,9 +161,13 @@ document.addEventListener("theme:ready", () => {
   $id("p-cat").textContent = p.catName;
   $id("p-name").textContent = p.name;
   $id("p-short").textContent = p.short;
-  $id("p-stars").innerHTML = stars(p.rating);
-  $id("p-rating").textContent = p.rating;
-  $id("p-reviews").textContent = `(${p.reviews} تقييم)`;
+  if (p.rating) {
+    $id("p-stars").innerHTML = stars(p.rating);
+    $id("p-rating").textContent = p.rating;
+    $id("p-reviews").textContent = `(${p.reviews} تقييم)`;
+  } else {
+    $id("p-stars").parentElement.innerHTML = `<span class="ltr" style="font-size:13px">${p.model || ""}</span>`;
+  }
   $id("p-sku").textContent = "AZ-" + p.id.toUpperCase();
   $id("p-price").innerHTML = `${p.old ? `<del>${p.old}</del>` : ""}${money(p.price)}${p.unit ? ` <small>${p.unit}</small>` : ""}`;
   $id("sb-price").innerHTML = money(p.price);
@@ -161,6 +175,7 @@ document.addEventListener("theme:ready", () => {
   if (p.old) { $id("p-save").textContent = `وفّر ${p.old - p.price} ر.س`; $id("p-save").classList.remove("hidden"); }
   if (p.badge) { $id("p-badge").textContent = p.badge; $id("p-badge").classList.remove("hidden"); }
   if (p.cat === "acc") $id("perk-w").textContent = "ضمان سنتين";
+  else if (!p.grades) { $id("perk-w").textContent = "منتج أصلي"; $id("perk-w").nextSibling.textContent = "مختار بعناية"; }
 
   // Gallery
   const photo = $id("main-photo");
@@ -220,13 +235,49 @@ document.addEventListener("theme:ready", () => {
     g.addEventListener("grade", e => grade = e.detail);
   }
 
+  // Gift (bundle) + generic options
+  const sel = {};
+  let gift = null;
+  if (p.gifts) {
+    $id("opt-gift").classList.remove("hidden");
+    $id("gifts").innerHTML = p.gifts.map(findProduct).map(g => `
+      <button type="button" class="gift" data-gift="${g.id}">
+        <span class="gift-img"><img src="${g.img}" alt=""></span>
+        <span class="gift-name">${g.name}</span>
+        <span class="gift-val">قيمتها <del>${g.price}</del> ر.س</span>
+        <span class="gift-check">${icon("check", "i-xs")}</span>
+      </button>`).join("");
+    $id("gifts").addEventListener("click", e => {
+      const b = e.target.closest("[data-gift]"); if (!b) return;
+      gift = findProduct(b.dataset.gift);
+      document.querySelectorAll("[data-gift]").forEach(x => x.classList.toggle("active", x === b));
+      $id("opt-gift").classList.remove("missing");
+    });
+  }
+  if (p.opts) {
+    $id("opt-generic").innerHTML = p.opts.map(o => `
+      <div class="opt" data-opt="${o.id}">
+        <div class="opt-label"><b class="ol-t">${o.label} <i>*</i></b><span data-opt-val>اختر</span></div>
+        <div class="opts">${o.choices.map(c => `<button type="button" class="opt-btn" data-o="${o.id}" data-v="${c}">${c}</button>`).join("")}</div>
+      </div>`).join("");
+    $id("opt-generic").addEventListener("click", e => {
+      const b = e.target.closest("[data-o]"); if (!b) return;
+      sel[b.dataset.o] = b.dataset.v;
+      document.querySelectorAll(`[data-o="${b.dataset.o}"]`).forEach(x => x.classList.toggle("active", x === b));
+      const box = document.querySelector(`[data-opt="${b.dataset.o}"]`);
+      box.classList.remove("missing"); box.querySelector("[data-opt-val]").innerHTML = `<b>${b.dataset.v}</b>`;
+    });
+  }
+
   // Qty
   const q = $id("q");
   $id("q-plus").onclick = () => q.value = Math.min(99, +q.value + 1);
   $id("q-minus").onclick = () => q.value = Math.max(1, +q.value - 1);
-  const optLabel = () => zonesOn
-    ? ZONES.map(z => `${z.name}: ${picks[z.id].label}`).join(" · ")
-    : grade ? `الدرجة ${grade.label} (${grade.name})` : "";
+  const optLabel = () => [
+    zonesOn ? ZONES.map(z => `${z.name}: ${picks[z.id].label}`).join(" · ") : grade ? `الدرجة ${grade.label} (${grade.name})` : "",
+    ...(p.opts || []).map(o => `${o.label.replace("اختر ", "")}: ${sel[o.id]}`),
+    gift ? `الهدية: ${gift.name}` : ""
+  ].filter(Boolean).join(" · ");
   const add = () => {
     if (zonesOn) {
       const missing = ZONES.filter(z => !picks[z.id]);
@@ -237,6 +288,15 @@ document.addEventListener("theme:ready", () => {
         return false;
       }
     }
+    const missOpts = (p.opts || []).filter(o => !sel[o.id]);
+    if (missOpts.length || (p.gifts && !gift)) {
+      missOpts.forEach(o => document.querySelector(`[data-opt="${o.id}"]`).classList.add("missing"));
+      if (p.gifts && !gift) $id("opt-gift").classList.add("missing");
+      $id("opt-err").classList.remove("hidden");
+      (document.querySelector(".missing") || $id("opt-err")).scrollIntoView({ behavior: "smooth", block: "center" });
+      return false;
+    }
+    $id("opt-err").classList.add("hidden");
     Cart.add(p.id, Math.max(1, +q.value || 1), optLabel());
     return true;
   };
@@ -252,22 +312,28 @@ document.addEventListener("theme:ready", () => {
   document.addEventListener("wish:change", syncWish); syncWish();
 
   // Description + specs
-  const desc = {
+  let desc = {
     cars: `<p>عازل بلس الحراري للسيارات مصنوع بتقنية <b>النانو سيراميك</b> المطوّرة، يمنع دخول حرارة الشمس للمقصورة ويحافظ على برودة سيارتك حتى في عز الصيف، بدون ما يأثر على وضوح الرؤية أو إشارة الجوال والـ GPS.</p>
       <h3>ليش عازل بلس؟</h3>
       <ul><li>عزل حراري (TSER) حتى 65% للدرجة 00، و76% للدرجة 01، و94% للدرجة 02.</li><li>حجب 99% من الأشعة فوق البنفسجية لحماية بشرتك والمقصورة.</li><li>وضوح رؤية عالي ليلاً ونهاراً.</li><li>خصوصية بدرجات تظليل متعددة.</li><li>ضمان حقيقي 5 سنوات ضد التقشّر والفقاعات وتغيّر اللون.</li></ul>
       <h3>تظليل على كيفك</h3><p>تختار درجة مستقلة لكل جهة: الزجاج الأمامي، الجوانب الأمامية، الجوانب الخلفية، والزجاج الخلفي.</p>`,
     homes: `<p>عازل حراري للمنازل والمكاتب يمنحك <b>خصوصية كاملة وتوفير يدوم</b>. يقلّل دخول الحرارة عبر النوافذ والواجهات الزجاجية، فيخفّ الحمل على المكيّف وتنخفض فاتورة الكهرباء.</p>
       <ul><li>عزل حراري (TSER) يصل حتى 94% حسب الدرجة.</li><li>حجب 99% من الأشعة فوق البنفسجية — يحمي الأثاث والأرضيات من البهتان.</li><li>توفير عالي في استهلاك الطاقة.</li><li>رؤية واضحة بدرجات تظليل متعددة.</li></ul>`,
-    acc: `<p>${p.short}. منتج أصلي مختار بعناية ليناسب استخدامك اليومي في السيارة، مع <b>ضمان سنتين</b>.</p><ul><li>جودة تصنيع عالية وخامات متينة.</li><li>متوافق مع أغلب الجوالات والسيارات.</li><li>شحن سريع لكل مدن المملكة.</li></ul>`
-  }[p.cat];
+  }[p.cat] || `<p>${p.short}.${p.cat === "acc" ? " منتج أصلي مختار بعناية ليناسب استخدامك اليومي في السيارة، مع <b>ضمان سنتين</b>." : " منتج أصلي مختار بعناية."}</p>
+      ${p.features ? `<h3>المزايا</h3><ul>${p.features.map(f => `<li>${f}</li>`).join("")}</ul>` : ""}
+      ${p.bundle ? `<h3>محتويات الباكج</h3><ul>${p.bundle.map(findProduct).map(b => `<li><a class="link" href="product.html?id=${b.id}">${b.name}</a></li>`).join("")}</ul>` : ""}`;
+  if (p.gifts) desc += `<h3>اختر هديتك مجاناً</h3><ul>${p.gifts.map(findProduct).map(g => `<li>${g.name}</li>`).join("")}</ul>`;
   $id("p-desc").innerHTML = desc;
-  const specs = [["القسم", p.catName], ...(p.specs || []), ...(isFilm ? [["التقنية", "نانو سيراميك"], ["درجات التظليل", GRADES.map(g => `${g.label} (${g.name})`).join(" · ")]] : [["الضمان", "سنتين"]])];
+  const specs = [["القسم", p.catName], ...(p.specs || []), ...(isFilm ? [["التقنية", "نانو سيراميك"], ["درجات التظليل", GRADES.map(g => `${g.label} (${g.name})`).join(" · ")]] : p.cat === "acc" ? [["الضمان", "سنتين"]] : [])];
   $id("p-specs").innerHTML = specs.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("");
 
   // Related
-  $id("related").innerHTML = PRODUCTS.filter(x => x.id !== p.id).slice(0, 4).map(productCard).join("");
+  const same = PRODUCTS.filter(x => x.id !== p.id && x.cat === p.cat), others = PRODUCTS.filter(x => x.id !== p.id && x.cat !== p.cat && !x.grades);
+  $id("related").innerHTML = [...same, ...others].slice(0, 4).map(productCard).join("");
   document.querySelectorAll("#t-reviews [data-stars]").forEach(el => el.outerHTML = stars(5));
+
+  // Customer reviews block is about the tint products only
+  if (!p.grades) { $id("reviews").remove(); $id("t-reviews").remove(); }
 
   // Sticky buy bar (mobile)
   const sb = $id("sticky-buy"), addBtn = $id("add");

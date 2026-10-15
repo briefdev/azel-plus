@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=11">
+  <link rel="stylesheet" href="assets/css/style.css?v=15">
 </head>
 <body>
 <div id="site-header"></div>
@@ -61,22 +61,22 @@
       </div>
       <div class="feature-grid">
         <article class="feature-card reveal">
-          <span class="badge">الأكثر مبيعاً</span>
+          <span class="badge">+ هدية مجاناً</span>
           <a href="product.html?id=car-film" class="feature-media"><img src="assets/img/product-car.webp" alt="عازل حراري للسيارات" loading="lazy"></a>
           <div class="feature-body">
             <div>
               <span class="chip">عوازل السيارات</span>
-              <h3 class="mt-1"><a href="product.html?id=car-film">عازل حراري لمختلف أنواع السيارات</a></h3>
+              <h3 class="mt-1"><a href="product.html?id=car-film">باكج التظليل + هدية</a></h3>
             </div>
-            <p class="lead">تقنية نانو سيراميك مطوّرة تمنع حرارة الشمس وتحافظ على وضوح الرؤية، مع ضمان حقيقي 5 سنوات.</p>
+            <p class="lead">عازل حراري نانو سيراميك بدرجة لكل جهة وضمان حقيقي 5 سنوات — ومعه هدية تختارها: هولدر MagSafe أو فواحة أو شاحن أو جهاز تتبع.</p>
             <div class="spec-list">
               <div class="spec"><b>94%</b><span>عزل حراري حتى</span></div>
               <div class="spec"><b>99%</b><span>حجب UV</span></div>
               <div class="spec"><b>5</b><span>سنوات ضمان</span></div>
             </div>
             <div class="feature-foot">
-              <span class="price"><del>300</del> 196 <span class="cur">ر.س</span></span>
-              <a href="product.html?id=car-film" class="btn">اختر الدرجة واطلب</a>
+              <span class="price">230 <span class="cur">ر.س</span></span>
+              <a href="product.html?id=car-film" class="btn">اختر الدرجة والهدية</a>
             </div>
           </div>
         </article>
@@ -144,17 +144,46 @@
     </div>
   </section>
 
-  <!-- ACCESSORIES -->
+  <!-- SHOP BY CATEGORY -->
   <section class="section bg-white">
     <div class="container">
       <div class="section-head">
         <div>
-          <span class="eyebrow">ضمان سنتين</span>
-          <h2 class="section-title">إكسسوارات عصرية للسيارة</h2>
+          <span class="eyebrow">أكثر من تظليل</span>
+          <h2 class="section-title">تسوّق حسب القسم</h2>
+          <p class="section-sub">إكسسوارات سيارة وأجهزة صحية وسماعات وعطور — مختارة بعناية من نفس الفريق اللي يهتم بتظليل سيارتك.</p>
         </div>
-        <a href="shop.html?cat=acc" class="link">عرض الكل <svg class="i i-sm" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+        <a href="shop.html" class="link">كل المنتجات <svg class="i i-sm" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
       </div>
-      <div class="products" data-products="acc"></div>
+      <div class="cat-tiles" id="cat-tiles"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCT SHOWCASE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">منتجات مختارة</span>
+        <h2 class="section-title">اكتشف إكسسواراتنا</h2>
+      </div>
+      <div class="cat-pills showcase-tabs" id="showcase-tabs" role="tablist"></div>
+      <div class="products" id="showcase"></div>
+      <div class="text-center mt-4"><a href="shop.html" class="btn btn-outline" id="showcase-more">عرض كل المنتجات</a></div>
+    </div>
+  </section>
+
+  <!-- GIFT BANNER -->
+  <section class="section-sm" style="padding-top:0">
+    <div class="container">
+      <div class="gift-banner reveal">
+        <div class="gb-text">
+          <span class="eyebrow">عرض الباكج</span>
+          <h2>ظلّل سيارتك واختر هديتك</h2>
+          <p>مع باكج التظليل تختار هدية وحدة مجاناً من هذي المنتجات.</p>
+          <a href="product.html?id=car-film" class="btn btn-lime btn-lg mt-3">اطلب الباكج بـ 230 ر.س</a>
+        </div>
+        <div class="gb-items" id="gb-items"></div>
+      </div>
     </div>
   </section>
 
@@ -210,11 +239,34 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=11"></script>
-<script src="assets/js/faq.js?v=11"></script>
+<script src="assets/js/main.js?v=15"></script>
+<script src="assets/js/faq.js?v=15"></script>
 <script>
   document.addEventListener("theme:ready", () => {
     renderFaq(document.getElementById("home-faq"), FAQ.slice(0, 6));
+
+    // Category tiles (all except tint products already featured above)
+    document.getElementById("cat-tiles").innerHTML = CATS.filter(c => !["cars", "homes"].includes(c.id)).map(c => {
+      const n = PRODUCTS.filter(p => p.cat === c.id).length;
+      return `<a href="shop.html?cat=${c.id}" class="cat-tile"><span class="ct-img"><img src="${c.img}" alt="" loading="lazy"></span><span class="ct-body"><b>${c.name}</b><small>${n} منتجات</small></span><span class="ct-go">${icon("arrowL", "i-sm")}</span></a>`;
+    }).join("");
+
+    // Showcase tabs
+    const tabs = [{ id: "all", name: "الكل" }, ...CATS.filter(c => !["cars", "homes"].includes(c.id)).map(c => ({ id: c.id, name: c.short }))];
+    const tabsEl = document.getElementById("showcase-tabs"), grid = document.getElementById("showcase"), more = document.getElementById("showcase-more");
+    tabsEl.innerHTML = tabs.map((t, i) => `<button class="pill ${i ? "" : "active"}" data-tab-cat="${t.id}" role="tab">${t.name}</button>`).join("");
+    const show = id => {
+      const list = PRODUCTS.filter(p => !p.grades && (id === "all" || p.cat === id));
+      grid.innerHTML = list.slice(0, 8).map(productCard).join("");
+      more.href = id === "all" ? "shop.html" : `shop.html?cat=${id}`;
+      tabsEl.querySelectorAll("[data-tab-cat]").forEach(b => b.classList.toggle("active", b.dataset.tabCat === id));
+    };
+    tabsEl.addEventListener("click", e => { const b = e.target.closest("[data-tab-cat]"); if (b) show(b.dataset.tabCat); });
+    show("all");
+
+    // Gift banner items
+    const bundle = findProduct("car-film");
+    document.getElementById("gb-items").innerHTML = bundle.gifts.map(findProduct).map(g => `<a href="product.html?id=${g.id}" class="gb-item"><span><img src="${g.img}" alt="" loading="lazy"></span><b>${g.name}</b></a>`).join("");
     const root = document.querySelector("[data-tint]"), cta = document.getElementById("tint-cta");
     root.addEventListener("grade", e => cta.href = "product.html?id=car-film&grade=" + e.detail.id);
     cta.href = "product.html?id=car-film&grade=" + root.dataset.selected;

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=11">
+  <link rel="stylesheet" href="assets/css/style.css?v=15">
 </head>
 <body>
 <div id="site-header"></div>
@@ -20,7 +20,7 @@
     <div class="container">
       <nav class="crumbs" aria-label="مسار التنقل"><a href="index.html">الرئيسية</a><span class="sep">/</span><span id="crumb-cur">المتجر</span></nav>
       <h1 id="shop-title">جميع المنتجات</h1>
-      <p id="shop-sub">عوازل حرارية بتقنية النانو سيراميك وإكسسوارات عصرية لسيارتك — كلها مختارة بعناية ومضمونة.</p>
+      <p id="shop-sub">عوازل حرارية وإكسسوارات سيارة وأجهزة صحية وسماعات وعطور — كلها مختارة بعناية ومضمونة.</p>
     </div>
   </section>
 
@@ -56,6 +56,7 @@
           <div><h3>أول مرة تطلب؟</h3><p>استخدم الكود <b class="ltr" style="color:var(--lime)">Az25</b> ووفّر على طلبك الأول.</p></div>
           <button class="btn btn-lime btn-sm" data-copy="Az25">انسخ الكود</button>
         </div>
+        <div class="cat-pills shop-pills" id="shop-pills" role="tablist" aria-label="الأقسام"></div>
         <div class="toolbar">
           <div class="flex items-center gap-1 wrap">
             <button class="btn btn-outline btn-sm filter-toggle" data-open="filters"><span data-i="filter" data-ic="i-sm"></span> تصفية</button>
@@ -83,7 +84,7 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=11"></script>
+<script src="assets/js/main.js?v=15"></script>
 <script>
 document.addEventListener("theme:ready", () => {
   const params = new URLSearchParams(location.search);
@@ -98,20 +99,41 @@ document.addEventListener("theme:ready", () => {
     if (q) return [`نتائج البحث عن «${q}»`, "نتائج مطابقة لبحثك في متجر عازل بلس."];
     if (state.cats.length === 1) {
       const c = CATS.find(x => x.id === state.cats[0]);
-      const subs = { cars: "عوازل حرارية بتقنية النانو سيراميك لمختلف أنواع السيارات، بضمان حقيقي 5 سنوات.", homes: "خصوصية كاملة وتوفير يدوم في استهلاك الكهرباء لبيتك ومكتبك.", acc: "شواحن وبطاريات ومثبتات جوال عصرية للسيارة — بضمان سنتين." };
+      const subs = {
+        cars: "عوازل حرارية بتقنية النانو سيراميك لمختلف أنواع السيارات، بضمان حقيقي 5 سنوات.",
+        homes: "خصوصية كاملة وتوفير يدوم في استهلاك الكهرباء لبيتك ومكتبك.",
+        acc: "شواحن وهولدرات وأجهزة تتبع عصرية للسيارة — بضمان سنتين.",
+        health: "أساور صحية ذكية تتابع نبضك ونومك وضغطك، مع تقارير بالذكاء الاصطناعي.",
+        audio: "سماعات لاسلكية بعزل ضوضاء ومايكات واضحة للمكالمات والموسيقى.",
+        scent: "فواحات وعطور فاخرة للسيارة والمكتب والبيت."
+      };
       return [c.name, subs[c.id]];
     }
     return ["جميع المنتجات", document.getElementById("shop-sub").textContent];
   };
 
+  const pills = document.getElementById("shop-pills");
+  const renderPills = () => {
+    const cur = state.cats.length === 1 ? state.cats[0] : state.cats.length ? null : "all";
+    pills.innerHTML = [{ id: "all", short: "الكل" }, ...CATS].map(c => `<button class="pill ${cur === c.id ? "active" : ""}" data-pill="${c.id}">${c.short}</button>`).join("");
+  };
+  pills.addEventListener("click", e => {
+    const b = e.target.closest("[data-pill]"); if (!b) return;
+    state.cats = b.dataset.pill === "all" ? [] : [b.dataset.pill];
+    document.querySelectorAll("#f-cats input").forEach(i => i.checked = state.cats.includes(i.value));
+    history.replaceState(null, "", state.cats.length ? `?cat=${state.cats[0]}` : "shop.html");
+    apply();
+  });
+
   function apply() {
+    renderPills();
     let list = PRODUCTS.filter(p =>
       (!state.cats.length || state.cats.includes(p.cat)) &&
       (state.min === "" || p.price >= +state.min) &&
       (state.max === "" || p.price <= +state.max) &&
-      p.rating >= state.rate &&
-      (!q || (p.name + p.short + p.catName).includes(q)));
-    const s = { rating: (a, b) => b.rating - a.rating, low: (a, b) => a.price - b.price, high: (a, b) => b.price - a.price, pop: (a, b) => b.reviews - a.reviews }[state.sort];
+      (p.rating || 0) >= state.rate &&
+      (!q || (p.name + p.short + p.catName + (p.model || "")).toLowerCase().includes(q.toLowerCase())));
+    const s = { rating: (a, b) => (b.rating || 0) - (a.rating || 0), low: (a, b) => a.price - b.price, high: (a, b) => b.price - a.price, pop: (a, b) => (b.reviews || 0) - (a.reviews || 0) }[state.sort];
     list = [...list].sort(s);
     document.getElementById("grid").innerHTML = list.map(productCard).join("");
     document.getElementById("res-count").textContent = list.length;

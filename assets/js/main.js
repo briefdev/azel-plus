@@ -25,30 +25,127 @@ const GRADES = [
   { id: "02", label: "02", name: "تعتيم كامل", short: "تعتيم كامل", desc: "تظليل داكن يوفر أعلى مستوى من الخصوصية وتقليل الوهج", alpha: .82, heat: 94, uv: 99, privacy: 100 }
 ];
 
-/* ---------- Products ---------- */
+/* ---------- Products ----------
+   features: نقاط المزايا | specs: جدول المواصفات | opts: خيارات المنتج (مطلوبة)
+   gifts: معرّفات المنتجات المتاحة كهدية (باكج) | bundle: معرّفات منتجات الباكج */
+const IMG = "assets/img/";
 const PRODUCTS = [
   {
-    id: "car-film", cat: "cars", catName: "عوازل السيارات",
-    name: "عازل حراري لمختلف أنواع السيارات",
-    short: "تقنية نانو سيراميك مطوّرة بضمان حقيقي 5 سنوات",
-    price: 196, old: 300, img: "assets/img/product-car.webp", cover: true,
-    gallery: ["assets/img/product-car.webp", "assets/img/rolls.webp"],
-    rating: 4.9, reviews: 312, badge: "الأكثر مبيعاً", grades: true,
-    specs: [["العزل الحراري (TSER)", "حتى 94% حسب الدرجة"], ["حجب الأشعة UV", "99%"], ["الضمان", "5 سنوات"]]
+    id: "car-film", cat: "cars",
+    name: "باكج التظليل + هدية",
+    model: "عازل حراري لمختلف أنواع السيارات",
+    short: "تظليل نانو سيراميك بدرجة مختلفة لكل جهة + هدية تختارها",
+    price: 230, img: IMG + "product-car.webp", cover: true,          // TODO: السعر حسب الكتالوج (كان 196 بدون هدية)
+    gallery: [IMG + "product-car.webp", IMG + "rolls.webp"],
+    rating: 4.9, reviews: 312, badge: "+ هدية مجاناً", grades: true,
+    gifts: ["magsafe-holder", "cy04", "charger-4in1", "tracker"],
+    specs: [["العزل الحراري (TSER)", "حتى 94% حسب الدرجة"], ["حجب الأشعة UV", "99%"], ["الضمان", "5 سنوات"], ["الهدية", "هولدر MagSafe أو فواحة CY04 أو شاحن CC09 أو جهاز تتبع"]]
   },
   {
-    id: "home-film", cat: "homes", catName: "عوازل المنازل والمكاتب",
+    id: "home-film", cat: "homes",
     name: "عازل حراري للمكاتب والمنازل",
     short: "يقلل دخول الحرارة ويوفّر في استهلاك الكهرباء",
-    price: 75, unit: "للمتر", img: "assets/img/product-home.webp", cover: true,
-    gallery: ["assets/img/product-home.webp", "assets/img/rolls.webp"],
+    price: 75, unit: "للمتر", img: IMG + "product-home.webp", cover: true,
+    gallery: [IMG + "product-home.webp", IMG + "rolls.webp"],
     rating: 4.8, reviews: 96, badge: "جديد", grades: true,
     specs: [["العزل الحراري (TSER)", "حتى 94% حسب الدرجة"], ["حجب الأشعة UV", "99%"], ["توفير الطاقة", "عالي"]]
   },
-  { id: "charger-120", cat: "acc", catName: "إكسسوارات السيارة", name: "شاحن سيارة 120W مع أسلاك مدمجة", short: "أسلاك قابلة للسحب Type-C و Lightning", price: 150, img: "assets/img/acc-1.webp", gallery: ["assets/img/acc-1.webp"], rating: 4.7, reviews: 41 },
-  { id: "powerbank-10k", cat: "acc", catName: "إكسسوارات السيارة", name: "بطارية محمولة 10000mAh بشحن سريع وشاشة عرض", short: "شحن سريع مع شاشة رقمية لنسبة الشحن", price: 90, img: "assets/img/acc-2.webp", gallery: ["assets/img/acc-2.webp"], rating: 4.6, reviews: 28 },
-  { id: "charger-4in1", cat: "acc", catName: "إكسسوارات السيارة", name: "شاحن سيارة 4 في 1 بقوة 45W مع وايرات مدمجة", short: "منافذ متعددة وأسلاك مدمجة", price: 150, img: "assets/img/acc-3.webp", gallery: ["assets/img/acc-3.webp"], rating: 4.8, reviews: 35 },
-  { id: "magsafe-holder", cat: "acc", catName: "إكسسوارات السيارة", name: "مثبت جوال ماج سيف للسيارة مع قاعدة كوب", short: "تثبيت مغناطيسي قوي على حامل الأكواب", price: 90, img: "assets/img/acc-4.webp", gallery: ["assets/img/acc-4.webp"], rating: 4.5, reviews: 19 }
+
+  /* إكسسوارات السيارة */
+  {
+    id: "charger-4in1", cat: "acc", model: "Phone Planet · CC09 · 45W",
+    name: "شاحن سيارة 4 في 1 CC09 + مظلة سيارة",
+    short: "يشحن 4 أجهزة مع كابل Lightning مدمج — ومعه مظلة سيارة",
+    price: 150, img: IMG + "acc-3.webp", gallery: [IMG + "acc-3.webp", IMG + "cat-cc09.webp"],
+    rating: 4.8, reviews: 35, badge: "4 أجهزة",
+    features: ["يشحن 4 أجهزة في نفس الوقت — Type-C + USB + Lightning مدمج", "كابل Lightning مدمج 80cm — ما تحتاج كابل إضافي", "شحن سريع 45 واط — يشحن جوالك بسرعة", "ولاعة كهربائية مدمجة", "أداة كسر زجاج الطوارئ مدمجة", "إضاءة RGB ملونة"],
+    specs: [["القدرة", "45W"], ["المنافذ", "Type-C · USB · Lightning مدمج"], ["اللون", "أسود"], ["مع الطلب", "مظلة سيارة"]]
+  },
+  {
+    id: "magsafe-holder", cat: "acc", model: "Phone Planet · Car Bracket Series",
+    name: "هولدر MagSafe للسيارة",
+    short: "يثبت في حامل الأكواب ويمسك الجوال بالمغناطيس",
+    price: 85, img: IMG + "acc-4.webp", gallery: [IMG + "acc-4.webp", IMG + "cat-holder.webp"],
+    rating: 4.5, reviews: 19, badge: "ماج سيف",
+    features: ["يمسك الجوال بالمغناطيس — بدون كليبسات أو تعديل", "يثبت في حامل كوب السيارة — ثانية واحدة للتركيب", "يدور 360° — اضبط الزاوية اللي تريحك", "متوافق مع iPhone 12 وما بعده + أي كفر MagSafe"],
+    specs: [["التثبيت", "حامل الأكواب"], ["الدوران", "360°"], ["التوافق", "iPhone 12 وما بعده · كفرات MagSafe"]]
+  },
+  {
+    id: "tracker", cat: "acc", model: "Phone Planet · Tracking Device Series",
+    name: "جهاز تتبع — إصدار iPhone",
+    short: "يعمل على شبكة Apple Find My — علّقه على مفاتيحك أو شنطتك",
+    price: 70, img: IMG + "cat-tracker.webp", cover: true, gallery: [IMG + "cat-tracker.webp"], badge: "Find My",
+    features: ["يعمل على Apple Find My — نفس تجربة أجهزة التتبع الأصلية", "يظهر على الخريطة فوراً — بدون إعدادات معقدة", "يستفيد من شبكة مئات ملايين أجهزة Apple حول العالم", "صغير وخفيف — يتعلّق على المفاتيح أو الحقيبة أو أي شيء ثمين"],
+    specs: [["الشبكة", "Apple Find My"], ["التوافق", "iPhone"]]
+  },
+  {
+    id: "bundle-holder-charger", cat: "acc", model: "باكج",
+    name: "باكج الهولدر + شاحن السيارة",
+    short: "هولدر MagSafe وشاحن CC09 4 في 1 في طلب واحد",
+    price: 235, img: IMG + "cat-bundle.webp", gallery: [IMG + "cat-bundle.webp", IMG + "cat-cc09.webp", IMG + "cat-holder.webp"], badge: "باكج", // TODO: سعر الباكج
+    bundle: ["magsafe-holder", "charger-4in1"],
+    specs: [["يتضمن", "هولدر MagSafe + شاحن سيارة CC09 4 في 1"]]
+  },
+  { id: "charger-120", cat: "acc", name: "شاحن سيارة 120W مع أسلاك مدمجة", short: "أسلاك قابلة للسحب Type-C و Lightning", price: 150, img: IMG + "acc-1.webp", gallery: [IMG + "acc-1.webp"], rating: 4.7, reviews: 41 },
+  { id: "powerbank-10k", cat: "acc", name: "بطارية محمولة 10000mAh بشحن سريع وشاشة عرض", short: "شحن سريع مع شاشة رقمية لنسبة الشحن", price: 90, img: IMG + "acc-2.webp", gallery: [IMG + "acc-2.webp"], rating: 4.6, reviews: 28 },
+
+  /* الساعات والأجهزة الصحية */
+  {
+    id: "hb03-pro", cat: "health", model: "Phone Planet · HB03 Advanced",
+    name: "سوار صحي HB03 المتطور",
+    short: "يتابع نبضك وضغطك والأكسجين ونومك — مع تقارير بالذكاء الاصطناعي",
+    price: 290, img: IMG + "cat-hb03-pro.webp", gallery: [IMG + "cat-hb03-pro.webp"], badge: "الأشمل", // TODO: السعر 260–290 يُثبّت بعد التفاوض
+    features: ["يقيس دقات قلبك ويتابعها طوال اليوم", "يراقب ضغط الدم ومستوى الأكسجين في الدم", "يحلل نومك ويخبرك متى كان النوم عميقاً أو خفيفاً", "AI يقرأ تقاريرك ويعطيك حلولاً واقتراحات مخصصة", "مشاركة عائلية — شارك تقاريرك مع شخص تختاره", "إرسال ذبذبة تنبيه لشخص عبر التطبيق", "بطارية تدوم 30 يوماً · مقاوم للماء IP68"],
+    opts: [{ id: "color", label: "اللون", choices: ["أسود", "رمادي"] }],
+    specs: [["مناسب لـ", "من يريد متابعة صحته بشكل كامل"], ["البطارية", "حتى 30 يوماً"], ["مقاومة الماء", "IP68"], ["التطبيق", "QWatch Pro — iPhone & Android"], ["الألوان", "أسود · رمادي"]]
+  },
+  {
+    id: "hb03", cat: "health", model: "Phone Planet · HB03",
+    name: "سوار صحي HB03 الأساسي",
+    short: "سوار صحي ذكي بتحليل AI ومشاركة عائلية — بسعر مناسب",
+    price: 180, img: IMG + "cat-hb03.webp", gallery: [IMG + "cat-hb03.webp"], badge: "قيمة ممتازة",
+    features: ["AI يحلل تقاريرك ويعطيك اقتراحات", "مشاركة عائلية — شارك تقاريرك مع من تريد", "إرسال ذبذبة تنبيه لشخص عبر التطبيق"],
+    opts: [{ id: "color", label: "اللون", choices: ["أسود", "رمادي"] }],
+    specs: [["مناسب لـ", "من يريد سوار صحي بمزايا ذكية وسعر مناسب"], ["ضغط الدم والأكسجين", "متوفر في HB03 المتطور"], ["التطبيق", "QWatch Pro — iPhone & Android"], ["الألوان", "أسود · رمادي"]]
+  },
+
+  /* السماعات */
+  {
+    id: "bt13", cat: "audio", model: "Phone Planet · Air2 Pro",
+    name: "سماعة لاسلكية PP-BT13",
+    short: "6 مايكات وعزل ضوضاء وترجمة فورية — للمكالمات والسفر",
+    price: 199, img: IMG + "cat-bt13.webp", gallery: [IMG + "cat-bt13.webp"], badge: "الأقوى",
+    features: ["6 مايكات (3 يمين + 3 يسار) — صوتك يوصل نظيف في أي مكان", "تحجب الضوضاء المحيطة وتنقّي صوتك في المكالمات", "ترجمة فورية مباشرة عبر التطبيق المرفق", "شحن لاسلكي + كابل · مقاومة للعرق والماء", "9 ساعات تشغيل متواصل"],
+    specs: [["مناسبة لـ", "المكالمات والاجتماعات وكثيري السفر"], ["التشغيل", "9 ساعات متواصلة"], ["الشحن", "لاسلكي + كابل"], ["اللون", "أسود"]]
+  },
+  {
+    id: "bt09", cat: "audio", model: "Phone Planet · Smart Interaction",
+    name: "سماعة لاسلكية PP-BT09 بشاشة",
+    short: "شاشة ملونة على الحقيبة تتحكم منها بالمكالمات والموسيقى",
+    price: 150, img: IMG + "cat-bt09.webp", gallery: [IMG + "cat-bt09.webp"], badge: "شاشة ملونة",
+    features: ["شاشة ملونة على الحقيبة — تتحكم بالمكالمة والموسيقى من غير ما تمسك جوالك", "عزل ضوضاء فعّال · صوت محيطي Dolby", "بطارية تدوم ~20 ساعة إجمالاً مع الحقيبة"],
+    specs: [["مناسبة لـ", "من يريد التحكم السريع بدون لمس الجوال"], ["البطارية", "~20 ساعة مع الحقيبة"], ["اللون", "أبيض"]]
+  },
+
+  /* العطور والفواحات */
+  {
+    id: "cy07", cat: "scent", model: "Phone Planet · Luxury Aroma Diffuser",
+    name: "فواحة CY07 Premium + علبة عطر PP-PS06",
+    short: "فواحة بالزيوت الأروماتية مع علبة عطر 100ml تختار رائحتها",
+    price: 190, img: IMG + "cat-cy07.webp", gallery: [IMG + "cat-cy07.webp", IMG + "cat-ps06.webp"], badge: "الأقوى",
+    features: ["تعمل بالزيوت الأروماتية — عطر أعمق وأطول من أي معطر عادي", "تعمل بدون توصيل — بطارية داخلية تكفي لساعات", "3 مستويات قوة رش + 3 ألوان إضاءة", "صغيرة ومدمجة — تصلح للسيارة والمكتب والبيت", "معها علبة عطر PP-PS06 حجم 100ml تكفي لفترة طويلة"],
+    opts: [{ id: "scent", label: "اختر العطر", choices: ["Ritz-Carlton", "Hilton No.3", "W Hotel", "Sandalwood", "White Tea", "Blue Coast"] }],
+    specs: [["سعة الزيت", "15ml لكل تعبئة"], ["علبة العطر", "PP-PS06 · 100ml"], ["اللون", "أسود"]]
+  },
+  {
+    id: "cy04", cat: "scent", model: "Phone Planet · Car Fragrance · 6-in-1",
+    name: "فواحة سيارة CY04 + 6 عطور",
+    short: "6 زجاجات عطور مختلفة وإضاءة RGB — تثبت في فتحة التكييف",
+    price: 150, img: IMG + "cat-cy04.webp", gallery: [IMG + "cat-cy04.webp"], badge: "كومبو",
+    features: ["تجي مع 6 زجاجات عطور مختلفة من اليوم الأول", "إضاءة RGB ملونة تزيّن السيارة", "تثبيت سهل في فتحة التكييف"],
+    opts: [{ id: "color", label: "اللون", choices: ["أبيض", "أسود"] }],
+    specs: [["مناسبة لـ", "من يريد تجربة عطور بدون تعقيد"], ["العطور المرفقة", "White Tea · Vanilla · Jasmine · Sandalwood · Moso Bamboo · Filter"], ["الألوان", "أبيض · أسود"]]
+  }
 ];
 
 /* ---------- Payment methods (icons from Salla CDN) ---------- */
@@ -64,16 +161,20 @@ const PAYMENTS = [
 const payIcons = (list = PAYMENTS) => list.map(p => `<span class="pay-ico" title="${p.alt}"><img src="assets/img/pay/${p.img}.png" alt="${p.alt}" loading="lazy"></span>`).join("");
 
 const CATS = [
-  { id: "cars",  name: "عوازل السيارات" },
-  { id: "homes", name: "عوازل المنازل والمكاتب" },
-  { id: "acc",   name: "إكسسوارات السيارة" }
+  { id: "cars",   name: "عوازل السيارات",          short: "عوازل السيارات", icon: "car",    img: IMG + "product-car.webp" },
+  { id: "homes",  name: "عوازل المنازل والمكاتب",   short: "المنازل والمكاتب", icon: "home",  img: IMG + "product-home.webp" },
+  { id: "acc",    name: "إكسسوارات السيارة",        short: "إكسسوارات السيارة", icon: "plug", img: IMG + "acc-3.webp" },
+  { id: "health", name: "الساعات والأجهزة الصحية", short: "الأجهزة الصحية", icon: "pulse",   img: IMG + "cat-hb03-pro.webp" },
+  { id: "audio",  name: "السماعات اللاسلكية",       short: "السماعات", icon: "headphones",   img: IMG + "cat-bt13.webp" },
+  { id: "scent",  name: "العطور والفواحات",         short: "العطور والفواحات", icon: "drop", img: IMG + "cat-cy07.webp" }
 ];
+const catName = id => CATS.find(c => c.id === id)?.name || "";
+PRODUCTS.forEach(p => p.catName = catName(p.cat));
 
 const NAV = [
   { href: "index.html",   label: "الرئيسية" },
-  { href: "shop.html",    label: "المتجر" },
   { href: "shop.html?cat=cars", label: "عوازل السيارات" },
-  { href: "shop.html?cat=homes", label: "المنازل والمكاتب" },
+  { href: "shop.html", label: "الأقسام", menu: true },
   { href: "https://warranty.azel-sa.com/", label: "تفعيل الضمان", ext: true },
   { href: "centers.html", label: "مراكز التركيب" },
   { href: `https://wa.me/${STORE.whatsapp}`, label: "تواصل معنا", ext: true }
@@ -128,6 +229,11 @@ const ICONS = {
   edit: '<path d="M4 20h4L19 9l-4-4L4 16v4Z"/>',
   headset: '<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20a3 3 0 0 1-3 2h-3"/>',
   nav: '<path d="m3 11 18-8-8 18-2-8-8-2Z"/>',
+  plug: '<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0V8Z"/><path d="M12 17v4"/>',
+  pulse: '<path d="M3 12h4l2-5 4 10 2-5h6"/>',
+  headphones: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/>',
+  drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/>',
+  gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3 8 4s0 4 4 4ZM12 8s1.5-5 4-4 0 4-4 4Z"/>',
   receipt: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/>'
 };
 const icon = (name, cls = "") => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`;
@@ -208,11 +314,11 @@ function productCard(p) {
     <div class="p-body">
       <span class="p-cat">${p.catName}</span>
       <h3 class="p-title"><a href="product.html?id=${p.id}">${p.name}</a></h3>
-      <div class="p-rating">${stars(p.rating)} <span class="num">${p.rating}</span> <span>(${p.reviews})</span></div>
+      ${p.rating ? `<div class="p-rating">${stars(p.rating)} <span class="num">${p.rating}</span> <span>(${p.reviews})</span></div>` : p.model ? `<div class="p-model">${p.model}</div>` : ""}
       <div class="p-foot">
         <span class="price">${money(p.price)}${p.unit ? ` <small>${p.unit}</small>` : ""}</span>
-        ${p.grades
-          ? `<a href="product.html?id=${p.id}" class="add-btn" aria-label="اختر الدرجة">${icon("arrowL", "i-sm")}</a>`
+        ${p.grades || p.opts || p.gifts
+          ? `<a href="product.html?id=${p.id}" class="add-btn" aria-label="اختر الخيارات">${icon("arrowL", "i-sm")}</a>`
           : `<button class="add-btn" data-add="${p.id}" aria-label="أضف للسلة">${icon("plus", "i-sm")}</button>`}
       </div>
     </div>
@@ -238,7 +344,15 @@ function renderHeader() {
       <button class="h-btn menu-toggle" data-open="mnav" aria-label="القائمة">${icon("menu")}</button>
       <a href="index.html" class="logo" aria-label="عازل بلس - الرئيسية"><img src="assets/img/logo.webp" alt="عازل بلس" width="250" height="91"></a>
       <nav class="main-nav" aria-label="القائمة الرئيسية">
-        ${NAV.map(n => `<a href="${n.href}" class="${isActive(n.href) ? "active" : ""}"${n.ext ? ' target="_blank" rel="noopener"' : ""}>${n.label}</a>`).join("")}
+        ${NAV.map(n => n.menu ? `
+        <div class="nav-drop">
+          <a href="${n.href}" class="${cur.startsWith("shop.html") && !cur.includes("cat=cars") ? "active" : ""}" aria-haspopup="true">${n.label} ${icon("chevD", "i-xs")}</a>
+          <div class="mega" role="menu">
+            ${CATS.map(c => `<a href="shop.html?cat=${c.id}" class="mega-item" role="menuitem"><span class="mega-img"><img src="${c.img}" alt="" loading="lazy"></span><span><b>${c.name}</b><small>${PRODUCTS.filter(p => p.cat === c.id).length} منتجات</small></span></a>`).join("")}
+            <a href="shop.html" class="mega-all">تصفّح كل المنتجات ${icon("arrowL", "i-sm")}</a>
+          </div>
+        </div>`
+        : `<a href="${n.href}" class="${isActive(n.href) ? "active" : ""}"${n.ext ? ' target="_blank" rel="noopener"' : ""}>${n.label}</a>`).join("")}
       </nav>
       <div class="header-actions">
         <button class="h-btn" data-search aria-label="بحث">${icon("search")}</button>
@@ -250,10 +364,10 @@ function renderHeader() {
       <div class="container">
         <form class="search-field" action="shop.html">
           ${icon("search")}
-          <input type="search" name="q" placeholder="ابحث عن عازل، شاحن، إكسسوار..." aria-label="بحث">
+          <input type="search" name="q" placeholder="ابحث عن عازل، شاحن، سماعة، فواحة..." aria-label="بحث">
         </form>
         <div class="search-tags"><span>الأكثر بحثاً:</span>
-          <a href="product.html?id=car-film">عازل سيارات</a><a href="product.html?id=home-film">عازل منازل</a><a href="shop.html?cat=acc">شواحن سيارة</a><a href="https://warranty.azel-sa.com/" target="_blank" rel="noopener">تفعيل الضمان</a>
+          <a href="product.html?id=car-film">عازل سيارات</a><a href="product.html?id=home-film">عازل منازل</a><a href="shop.html?cat=acc">شواحن سيارة</a><a href="shop.html?cat=audio">سماعات</a><a href="shop.html?cat=scent">فواحات</a><a href="https://warranty.azel-sa.com/" target="_blank" rel="noopener">تفعيل الضمان</a>
         </div>
       </div>
     </div>
@@ -268,7 +382,9 @@ function renderHeader() {
     </div>
     <div class="drawer-body">
       <nav class="mobile-nav">
-        ${NAV.map(n => `<a href="${n.href}" class="${isActive(n.href) ? "active" : ""}"${n.ext ? ' target="_blank" rel="noopener"' : ""}>${n.label}${icon("chevL", "i-sm")}</a>`).join("")}
+        ${NAV.map(n => n.menu
+          ? `<span class="mnav-title">الأقسام</span>${CATS.map(c => `<a href="shop.html?cat=${c.id}" class="mnav-cat"><span>${icon(c.icon, "i-sm")} ${c.name}</span>${icon("chevL", "i-sm")}</a>`).join("")}<span class="mnav-sep"></span>`
+          : `<a href="${n.href}" class="${isActive(n.href) ? "active" : ""}"${n.ext ? ' target="_blank" rel="noopener"' : ""}>${n.label}${icon("chevL", "i-sm")}</a>`).join("")}
         <a href="#">حسابي${icon("chevL", "i-sm")}</a>
       </nav>
       <div class="mobile-contact">
@@ -308,9 +424,7 @@ function renderFooter() {
       <div>
         <h4>المتجر</h4>
         <div class="footer-links">
-          <a href="shop.html?cat=cars">عوازل السيارات</a>
-          <a href="shop.html?cat=homes">عوازل المنازل والمكاتب</a>
-          <a href="shop.html?cat=acc">إكسسوارات السيارة</a>
+          ${CATS.map(c => `<a href="shop.html?cat=${c.id}">${c.name}</a>`).join("")}
           <a href="#">من نحن</a>
           <a href="centers.html">مراكز التركيب المقترحة</a>
         </div>
