@@ -1134,3 +1134,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 680px) { .shop-pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); } .shop-pills .pill { flex: none; } }
 .opt-label .ol-t { font-weight: 600; }
 .opt-label .ol-t i { color: var(--danger); font-style: normal; }
+
+/* Grid/flex children must be allowed to shrink below their content width
+   (otherwise horizontal-scroll rows such as the category pills widen the page on mobile) */
+.shop-layout > *, .pdp > *, .cart-layout > *, .centers-grid > *, .feature-grid > *,
+.tint > *, .hero-inner > *, .zones > *, .gift-banner > *, .cta-band > *, .footer-top > *,
+.products > *, .cat-tiles > *, .reviews > *, .steps > * { min-width: 0; }
+.buy-row .btn { min-width: 0; }
+@media (max-width: 420px) {
+  .buy-row { gap: 8px; }
+  .buy-row .btn { padding: 0 12px; font-size: 14.5px; }
+  .buy-row .qty button { width: 36px; }
+  .buy-row .qty input { width: 30px; }
+  .buy-row .btn-icon { width: 48px !important; height: 52px !important; }
+}
