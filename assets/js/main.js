@@ -148,6 +148,14 @@ const PRODUCTS = [
   }
 ];
 
+/* ---------- Voice reviews (التقييمات الصوتية) ----------
+   ارفع الملف الصوتي إلى assets/audio/ (mp3 أو m4a) وأضف سطراً هنا.
+   product: معرّف المنتج من PRODUCTS (اختياري) | rating: من 1 إلى 5 */
+const VOICE_REVIEWS = [
+  { name: "عبدالرحمن الشهري", city: "", product: "car-film", rating: 5, file: "assets/audio/review-1.mp3" }
+  // { name: "اسم العميل", city: "الرياض", product: "car-film", rating: 5, file: "assets/audio/review-2.mp3" },
+];
+
 /* ---------- Payment methods (icons from Salla CDN) ---------- */
 const PAYMENTS = [
   { img: "mada",               alt: "مدى" },
@@ -234,6 +242,9 @@ const ICONS = {
   headphones: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/>',
   drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/>',
   gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3 8 4s0 4 4 4ZM12 8s1.5-5 4-4 0 4-4 4Z"/>',
+  play: '<path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/>',
+  pause: '<rect x="7" y="5" width="3.5" height="14" rx="1" fill="currentColor"/><rect x="13.5" y="5" width="3.5" height="14" rx="1" fill="currentColor"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
   receipt: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/>'
 };
 const icon = (name, cls = "") => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`;
@@ -323,6 +334,79 @@ function productCard(p) {
       </div>
     </div>
   </article>`;
+}
+
+/* ---------- Voice reviews player ---------- */
+function renderVoiceReviews(el, list = VOICE_REVIEWS) {
+  if (!el) return;
+  const section = el.closest("section");
+  if (!list.length) { if (section) section.hidden = true; return; }
+  const countEl = section?.querySelector("#voice-count");
+  if (countEl) countEl.innerHTML = `${icon("mic", "i-sm")} ${list.length} ${list.length === 1 ? "تقييم صوتي" : "تقييمات صوتية"}`;
+  const BARS = 44;
+  const wave = seed => {           // deterministic waveform per reviewer
+    let h = 0; for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    return Array.from({ length: BARS }, (_, i) => {
+      h = (h * 1103515245 + 12345) >>> 0;
+      const env = Math.sin(Math.PI * (i + .5) / BARS) * .55 + .45;
+      return Math.round((28 + (h % 72)) * env);
+    });
+  };
+  const fmt = t => !isFinite(t) ? "0:00" : `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+  el.innerHTML = list.map((r, i) => {
+    const prod = r.product && findProduct(r.product);
+    return `
+    <article class="voice-card" data-voice="${i}">
+      <header class="vc-head">
+        <span class="avatar">${r.name.trim().charAt(0)}</span>
+        <div class="vc-who"><b>${r.name}</b><span>${[r.city, prod ? `<a href="product.html?id=${prod.id}">${prod.name}</a>` : ""].filter(Boolean).join(" · ")}</span></div>
+        ${r.rating ? stars(r.rating) : ""}
+      </header>
+      <div class="vc-player">
+        <button type="button" class="vc-play" aria-label="تشغيل تقييم ${r.name}">${icon("play")}</button>
+        <div class="vc-wave" role="slider" tabindex="0" aria-label="موضع التشغيل" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          ${wave(r.name + i).map(hh => `<i style="height:${hh}%"></i>`).join("")}
+        </div>
+        <span class="vc-time num">0:00</span>
+      </div>
+      <audio preload="metadata" src="${r.file}"></audio>
+    </article>`;
+  }).join("");
+
+  const cards = [...el.querySelectorAll("[data-voice]")];
+  cards.forEach(card => {
+    const audio = card.querySelector("audio"), btn = card.querySelector(".vc-play"),
+          waveEl = card.querySelector(".vc-wave"), bars = [...waveEl.children], time = card.querySelector(".vc-time");
+    const paint = () => {
+      const p = audio.duration ? audio.currentTime / audio.duration : 0;
+      const n = Math.round(p * bars.length);
+      bars.forEach((b, k) => b.classList.toggle("on", k < n));
+      waveEl.setAttribute("aria-valuenow", Math.round(p * 100));
+      time.textContent = audio.paused && !audio.currentTime ? fmt(audio.duration) : fmt(audio.currentTime);
+    };
+    const setPlaying = on => { card.classList.toggle("playing", on); btn.innerHTML = icon(on ? "pause" : "play"); btn.setAttribute("aria-label", (on ? "إيقاف" : "تشغيل") + " التقييم"); };
+    audio.addEventListener("loadedmetadata", paint);
+    audio.addEventListener("timeupdate", paint);
+    audio.addEventListener("play", () => setPlaying(true));
+    audio.addEventListener("pause", () => setPlaying(false));
+    audio.addEventListener("ended", () => { audio.currentTime = 0; setPlaying(false); paint(); });
+    audio.addEventListener("error", () => { card.classList.add("unavailable"); btn.disabled = true; time.textContent = "قريباً"; });
+    btn.addEventListener("click", () => {
+      if (audio.paused) { cards.forEach(c => c !== card && c.querySelector("audio").pause()); audio.play().catch(() => {}); }
+      else audio.pause();
+    });
+    const seek = p => { if (audio.duration) { audio.currentTime = Math.max(0, Math.min(1, p)) * audio.duration; paint(); } };
+    waveEl.addEventListener("click", e => {
+      const r = waveEl.getBoundingClientRect();
+      seek((r.right - e.clientX) / r.width);            // RTL: progress grows from the right
+    });
+    waveEl.addEventListener("keydown", e => {
+      if (!audio.duration) return;
+      if (e.key === "ArrowLeft") { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); e.preventDefault(); }
+      if (e.key === "ArrowRight") { audio.currentTime = Math.max(0, audio.currentTime - 5); e.preventDefault(); }
+      if (e.key === " " || e.key === "Enter") { btn.click(); e.preventDefault(); }
+    });
+  });
 }
 
 /* ---------- Layout: header / footer ---------- */

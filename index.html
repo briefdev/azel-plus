@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=17">
+  <link rel="stylesheet" href="assets/css/style.css?v=18">
 </head>
 <body>
 <div id="site-header"></div>
@@ -208,6 +208,21 @@
     </div>
   </section>
 
+  <!-- VOICE REVIEWS -->
+  <section class="section bg-green on-dark voice-section" id="voice-reviews">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">أصوات عملائنا</span>
+          <h2 class="section-title">اسمعها منهم مباشرة</h2>
+          <p class="section-sub">تجارب حقيقية بصوت عملائنا مع منتجات عازل بلس.</p>
+        </div>
+        <span class="voice-count" id="voice-count"></span>
+      </div>
+      <div class="voice-grid" id="voice-grid"></div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="section bg-white" id="faq">
     <div class="container">
@@ -239,8 +254,8 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=17"></script>
-<script src="assets/js/faq.js?v=17"></script>
+<script src="assets/js/main.js?v=18"></script>
+<script src="assets/js/faq.js?v=18"></script>
 <script>
   document.addEventListener("theme:ready", () => {
     renderFaq(document.getElementById("home-faq"), FAQ.slice(0, 6));
@@ -263,6 +278,9 @@
     };
     tabsEl.addEventListener("click", e => { const b = e.target.closest("[data-tab-cat]"); if (b) show(b.dataset.tabCat); });
     show("all");
+
+    // Voice reviews
+    renderVoiceReviews(document.getElementById("voice-grid"));
 
     // Gift banner items
     const bundle = findProduct("car-film");

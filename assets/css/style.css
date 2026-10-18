@@ -1148,3 +1148,36 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .buy-row .qty input { width: 30px; }
   .buy-row .btn-icon { width: 48px !important; height: 52px !important; }
 }
+
+/* ---------- Voice reviews ---------- */
+.voice-section { position: relative; overflow: hidden; isolation: isolate; }
+.voice-section::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(45% 80% at 0% 100%, rgba(200,225,21,.14), transparent 60%), radial-gradient(50% 90% at 100% 0%, rgba(31,128,106,.45), transparent 60%); }
+.voice-count { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: rgba(200,225,21,.12); border: 1px solid rgba(200,225,21,.3); color: var(--lime); font-weight: 600; font-size: 14px; }
+.voice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+.voice-grid > * { min-width: 0; }
+.voice-card { display: flex; flex-direction: column; gap: 18px; padding: 22px; border-radius: var(--r-lg); background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(6px); transition: border-color .3s, background .3s, transform .3s var(--ease); }
+.voice-card:hover { border-color: rgba(255,255,255,.2); }
+.voice-card.playing { border-color: rgba(200,225,21,.55); background: rgba(200,225,21,.06); }
+.vc-head { display: flex; align-items: center; gap: 12px; }
+.vc-head .avatar { background: var(--lime); color: var(--green-900); }
+.vc-who { flex: 1; min-width: 0; }
+.vc-who b { display: block; font-family: var(--font-head); font-size: 16px; color: #fff; }
+.vc-who span { display: block; font-size: 13px; color: #A9C2B9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-who a { color: var(--lime); }
+.vc-who a:hover { text-decoration: underline; }
+.vc-player { display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 16px; border-radius: 18px; background: rgba(0,0,0,.18); }
+.vc-play { width: 52px; height: 52px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--lime); color: var(--green-900); box-shadow: 0 8px 20px -8px rgba(200,225,21,.6); transition: transform .2s, background .2s; }
+.vc-play:hover { transform: scale(1.06); background: #D4EA2A; }
+.vc-play .i { width: 22px; height: 22px; stroke: none; }
+.vc-wave { flex: 1; min-width: 0; height: 40px; display: flex; align-items: center; gap: 2px; cursor: pointer; outline-offset: 4px; }
+.vc-wave i { flex: 1; min-width: 2px; border-radius: 3px; background: rgba(255,255,255,.22); transition: background .15s; }
+.vc-wave i.on { background: var(--lime); }
+.voice-card.playing .vc-wave i.on:last-of-type { background: #fff; }
+.vc-time { flex: none; min-width: 38px; text-align: center; font-size: 13px; color: #CFE0DA; }
+.voice-card.unavailable .vc-play { background: rgba(255,255,255,.12); color: rgba(255,255,255,.5); box-shadow: none; cursor: not-allowed; }
+.voice-card.unavailable .vc-wave { cursor: default; opacity: .5; }
+@media (max-width: 520px) {
+  .voice-grid { grid-template-columns: 1fr; }
+  .vc-player { gap: 10px; padding: 10px 12px; }
+  .vc-play { width: 46px; height: 46px; }
+}
