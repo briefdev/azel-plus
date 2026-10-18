@@ -1181,3 +1181,19 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .vc-player { gap: 10px; padding: 10px 12px; }
   .vc-play { width: 46px; height: 46px; }
 }
+
+/* ---------- Hero: tint picker card (replaces hero image) ---------- */
+.hero-tint {
+  position: relative; padding: clamp(22px, 3vw, 32px); border-radius: var(--r-xl);
+  background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.55);
+}
+.hero-tint h2 { font-size: clamp(26px, 2.8vw, 36px); margin-top: 10px; }
+.hero-tint .ht-sub { color: #A9C2B9; margin-top: 10px; font-size: 15.5px; }
+.hero-tint .grades { margin-top: 22px; }
+.hero-tint .grade .sw { height: 46px; }
+.hero-tint .ht-desc { color: #CFE0DA; margin-top: 16px; font-size: 15px; }
+.hero-tint .ht-desc b { color: var(--lime); }
+.hero-tint .tint-stats { margin-top: 16px; }
+.hero-tint > .btn { margin-top: 22px; }

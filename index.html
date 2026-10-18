@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=18">
+  <link rel="stylesheet" href="assets/css/style.css?v=19">
 </head>
 <body>
 <div id="site-header"></div>
@@ -25,7 +25,7 @@
         <p class="hero-lead">جرّبه براحتك، <strong>وإذا ما جاز لك رجّعه.</strong> عوازل حرارية بتقنية النانو سيراميك تحمي سيارتك وبيتك من حرارة الشمس وتمنحك خصوصية ووضوح رؤية.</p>
         <div class="hero-cta">
           <a href="product.html?id=car-film" class="btn btn-lime btn-lg">تسوّق عازل السيارات</a>
-          <a href="#tint" class="btn btn-ghost-light btn-lg">اختر درجة التظليل</a>
+          <a href="shop.html" class="btn btn-ghost-light btn-lg">تصفّح المنتجات</a>
         </div>
         <div class="hero-stats">
           <div><b class="num">94%</b><span>عزل حراري حتى</span></div>
@@ -34,7 +34,19 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-frame"><img src="assets/img/product-car.webp" alt="سيارة بعازل حراري من عازل بلس" width="900" height="898"></div>
+        <div class="hero-tint" id="tint" data-tint data-default="01">
+          <span class="eyebrow">قبل ما تطلب</span>
+          <h2>شوف الفرق بنفسك</h2>
+          <p class="ht-sub">يتوفر عازل بلس بثلاث درجات تناسب مختلف الاحتياجات. اختر الدرجة وشاهد كيف تبدو الرؤية من داخل السيارة.</p>
+          <div class="grades"></div>
+          <p class="ht-desc"><b data-t="name"></b> — <span data-t="desc"></span></p>
+          <div class="tint-stats">
+            <div class="meter"><span>عزل حراري TSER</span><b class="num" data-t="heat">76%</b><div class="bar"><i data-bar="heat"></i></div></div>
+            <div class="meter"><span>حجب UV</span><b class="num" data-t="uv">99%</b><div class="bar"><i data-bar="uv"></i></div></div>
+            <div class="meter"><span>الخصوصية</span><b class="num" data-t="privacy">65%</b><div class="bar"><i data-bar="privacy"></i></div></div>
+          </div>
+          <a href="product.html?id=car-film" class="btn btn-lime btn-lg btn-block" id="tint-cta">اطلب بهذه الدرجة</a>
+        </div>
       </div>
     </div>
   </section>
@@ -100,30 +112,6 @@
             </div>
           </div>
         </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- TINT EXPLORER -->
-  <section class="section bg-green on-dark" id="tint">
-    <div class="container tint" data-tint data-default="01">
-      <div class="tint-preview" aria-hidden="true">
-        <div class="sun"></div><div class="dunes"></div>
-        <div class="glass"></div><div class="glare"></div><div class="frame"></div>
-        <div class="label">الدرجة<b data-t="label">01</b><span data-t="name">تظليل متوسط</span></div>
-      </div>
-      <div>
-        <span class="eyebrow">قبل ما تطلب</span>
-        <h2 class="section-title">شوف الفرق بنفسك</h2>
-        <p class="section-sub">يتوفر عازل بلس بثلاث درجات تناسب مختلف الاحتياجات. اختر الدرجة وشاهد كيف تبدو الرؤية من داخل السيارة.</p>
-        <div class="grades"></div>
-        <p class="mt-2" style="color:#CFE0DA"><b style="color:var(--lime)" data-t="name"></b> — <span data-t="desc"></span></p>
-        <div class="tint-stats">
-          <div class="meter"><span>عزل حراري TSER</span><b class="num" data-t="heat">76%</b><div class="bar"><i data-bar="heat"></i></div></div>
-          <div class="meter"><span>حجب UV</span><b class="num" data-t="uv">99%</b><div class="bar"><i data-bar="uv"></i></div></div>
-          <div class="meter"><span>الخصوصية</span><b class="num" data-t="privacy">65%</b><div class="bar"><i data-bar="privacy"></i></div></div>
-        </div>
-        <div class="hero-cta"><a href="product.html?id=car-film" class="btn btn-lime" id="tint-cta">اطلب بهذه الدرجة</a></div>
       </div>
     </div>
   </section>
@@ -254,8 +242,8 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=18"></script>
-<script src="assets/js/faq.js?v=18"></script>
+<script src="assets/js/main.js?v=19"></script>
+<script src="assets/js/faq.js?v=19"></script>
 <script>
   document.addEventListener("theme:ready", () => {
     renderFaq(document.getElementById("home-faq"), FAQ.slice(0, 6));
