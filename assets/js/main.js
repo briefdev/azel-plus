@@ -6,8 +6,9 @@
 /* ---------- Store config (edit here) ---------- */
 const STORE = {
   name: "عازل بلس",
-  phone: "966500000000",          // TODO: رقم المتجر الفعلي
-  whatsapp: "966500000000",       // TODO: رقم الواتساب الفعلي
+  phone: "966545229391",
+  whatsapp: "966545229391",
+  phoneDisplay: "+966 54 522 9391",
   email: "info@azel-sa.com",
   instagram: "https://instagram.com/",
   tiktok: "https://tiktok.com/",
@@ -527,8 +528,8 @@ function renderFooter() {
       <div class="footer-contact-col">
         <h4>خدمة العملاء</h4>
         <div class="footer-contact">
-          <a href="https://wa.me/${STORE.whatsapp}" target="_blank" rel="noopener"><span class="ico">${icon("wa", "i-sm")}</span><span>واتساب<br><span class="ltr">+${STORE.whatsapp}</span></span></a>
-          <a href="tel:+${STORE.phone}"><span class="ico">${icon("phone", "i-sm")}</span><span>اتصال مباشر<br><span class="ltr">+${STORE.phone}</span></span></a>
+          <a href="https://wa.me/${STORE.whatsapp}" target="_blank" rel="noopener"><span class="ico">${icon("wa", "i-sm")}</span><span>واتساب<br><span class="ltr">${STORE.phoneDisplay}</span></span></a>
+          <a href="tel:+${STORE.phone}"><span class="ico">${icon("phone", "i-sm")}</span><span>اتصال مباشر<br><span class="ltr">${STORE.phoneDisplay}</span></span></a>
           <a href="mailto:${STORE.email}"><span class="ico">${icon("mail", "i-sm")}</span><span>${STORE.email}</span></a>
         </div>
       </div>
