@@ -37,7 +37,7 @@ const PRODUCTS = [
     model: "عازل حراري لمختلف أنواع السيارات",
     short: "تظليل نانو سيراميك بدرجة مختلفة لكل جهة + هدية تختارها",
     price: 230, img: IMG + "bundle-tint.webp", cover: true,          // TODO: السعر حسب الكتالوج (كان 196 بدون هدية)
-    gallery: [IMG + "bundle-tint.webp", IMG + "product-car.webp", IMG + "rolls.webp"],
+    gallery: [IMG + "bundle-tint.webp", IMG + "product-car.webp", IMG + "tint-rolls.webp"],
     rating: 4.9, reviews: 312, grades: true,   // الصورة تحمل عنوان الباكج، فلا شارة فوقها
     gifts: ["magsafe-holder", "cy04", "charger-4in1", "tracker"],
     specs: [["العزل الحراري (TSER)", "حتى 94% حسب الدرجة"], ["حجب الأشعة UV", "99%"], ["الضمان", "5 سنوات"], ["الهدية", "هولدر MagSafe أو فواحة CY04 أو شاحن CC09 أو جهاز تتبع"]]
@@ -47,7 +47,7 @@ const PRODUCTS = [
     name: "عازل حراري للمكاتب والمنازل",
     short: "يقلل دخول الحرارة ويوفّر في استهلاك الكهرباء",
     price: 75, unit: "للمتر", img: IMG + "product-home.webp", cover: true,
-    gallery: [IMG + "product-home.webp", IMG + "rolls.webp"],
+    gallery: [IMG + "product-home.webp"],
     rating: 4.8, reviews: 96, badge: "جديد", grades: true,
     specs: [["العزل الحراري (TSER)", "حتى 94% حسب الدرجة"], ["حجب الأشعة UV", "99%"], ["توفير الطاقة", "عالي"]]
   },

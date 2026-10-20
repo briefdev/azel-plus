@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=23">
+  <link rel="stylesheet" href="assets/css/style.css?v=25">
 </head>
 <body>
 <div id="site-header"></div>
@@ -54,13 +54,41 @@
     </div>
   </section>
 
-  <!-- TRUST -->
+  <!-- TRUST (hover / tap to reveal details) -->
   <section class="trust">
     <div class="container trust-grid">
-      <div class="trust-item"><span class="ico" data-i="award"></span><div><b>ضمان حقيقي 5 سنوات</b><span>يُفعّل إلكترونياً</span></div></div>
-      <div class="trust-item"><span class="ico" data-i="sparkle"></span><div><b>تقنية نانو سيراميك</b><span>لا تشوّش على الإشارة</span></div></div>
-      <div class="trust-item"><span class="ico" data-i="truck"></span><div><b>شحن لكل المملكة</b><span>مجاني للطلبات فوق 300 ر.س</span></div></div>
-      <div class="trust-item"><span class="ico" data-i="refresh"></span><div><b>ما جاز لك؟ رجّعه</b><span>استرجاع حسب السياسة</span></div></div>
+      <div class="trust-item" role="button" tabindex="0" aria-expanded="false" style="--d:0ms">
+        <span class="ico" data-i="award"></span>
+        <div class="ti-text">
+          <b>ضمان حقيقي 5 سنوات</b>
+          <span class="ti-swap"><span class="ti-sub">يُفعّل إلكترونياً</span><span class="ti-more">يغطي التقشّر والفقاعات وتغيّر اللون. فعّله برقم طلبك بعد التركيب — <a href='https://warranty.azel-sa.com/' target='_blank' rel='noopener'>تفعيل الضمان</a></span></span>
+        </div>
+        <span class="ti-plus" aria-hidden="true"></span>
+      </div>
+      <div class="trust-item" role="button" tabindex="0" aria-expanded="false" style="--d:90ms">
+        <span class="ico" data-i="sparkle"></span>
+        <div class="ti-text">
+          <b>تقنية نانو سيراميك</b>
+          <span class="ti-swap"><span class="ti-sub">لا تشوّش على الإشارة</span><span class="ti-more">عزل حراري حتى 94% وحجب 99% من الأشعة فوق البنفسجية، بدون ما يأثر على إشارة الجوال أو الـ GPS.</span></span>
+        </div>
+        <span class="ti-plus" aria-hidden="true"></span>
+      </div>
+      <div class="trust-item" role="button" tabindex="0" aria-expanded="false" style="--d:180ms">
+        <span class="ico" data-i="truck"></span>
+        <div class="ti-text">
+          <b>شحن لكل المملكة</b>
+          <span class="ti-swap"><span class="ti-sub">مجاني للطلبات فوق 300 ر.س</span><span class="ti-more">نوصل طلبك لكل مدن المملكة خلال 2–5 أيام عمل، والشحن مجاني للطلبات فوق 300 ر.س.</span></span>
+        </div>
+        <span class="ti-plus" aria-hidden="true"></span>
+      </div>
+      <div class="trust-item" role="button" tabindex="0" aria-expanded="false" style="--d:270ms">
+        <span class="ico" data-i="refresh"></span>
+        <div class="ti-text">
+          <b>ما جاز لك؟ رجّعه</b>
+          <span class="ti-swap"><span class="ti-sub">استرجاع حسب السياسة</span><span class="ti-more">جرّبه براحتك، وإذا ما جاز لك رجّعه حسب سياسة الاسترجاع — واثقين من جودتنا.</span></span>
+        </div>
+        <span class="ti-plus" aria-hidden="true"></span>
+      </div>
     </div>
   </section>
 
@@ -244,11 +272,22 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=23"></script>
-<script src="assets/js/faq.js?v=23"></script>
+<script src="assets/js/main.js?v=25"></script>
+<script src="assets/js/faq.js?v=25"></script>
 <script>
   document.addEventListener("theme:ready", () => {
     renderFaq(document.getElementById("home-faq"), FAQ.slice(0, 6));
+
+    // Trust strip: tap / keyboard toggles details (hover handled in CSS)
+    document.querySelectorAll(".trust-item").forEach(item => {
+      const toggle = () => {
+        const open = !item.classList.contains("open");
+        document.querySelectorAll(".trust-item.open").forEach(o => { o.classList.remove("open"); o.setAttribute("aria-expanded", "false"); });
+        item.classList.toggle("open", open); item.setAttribute("aria-expanded", open);
+      };
+      item.addEventListener("click", e => { if (!e.target.closest("a")) toggle(); });
+      item.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+    });
 
     // Category tiles (all except tint products already featured above)
     document.getElementById("cat-tiles").innerHTML = CATS.filter(c => !["cars", "homes"].includes(c.id)).map(c => {

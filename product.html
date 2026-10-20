@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=23">
+  <link rel="stylesheet" href="assets/css/style.css?v=25">
 </head>
 <body>
 <div id="site-header"></div>
@@ -150,7 +150,7 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="assets/js/main.js?v=23"></script>
+<script src="assets/js/main.js?v=25"></script>
 <script>
 document.addEventListener("theme:ready", () => {
   const params = new URLSearchParams(location.search);
@@ -184,6 +184,7 @@ document.addEventListener("theme:ready", () => {
   const photo = $id("main-photo");
   const setImg = src => { photo.src = src; photo.alt = p.name; $id("main-img").classList.toggle("contain", !p.cover); };
   setImg(p.gallery[0]);
+  if (p.gallery.length < 2) { $id("thumbs").style.display = "none"; document.querySelector(".gallery").classList.add("single"); }
   $id("thumbs").innerHTML = p.gallery.map((g, i) => `<button class="${i ? "" : "active"}" data-src="${g}" aria-label="صورة ${i + 1}"><img src="${g}" alt=""></button>`).join("");
   $id("thumbs").addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
